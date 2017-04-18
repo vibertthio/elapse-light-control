@@ -112,6 +112,7 @@ class Strip {
   }
 
   void turnOn() {
+    repeatBreathing = false;
     independentControl = false;
     dimming = false;
     alpha = 255;
@@ -120,6 +121,7 @@ class Strip {
   }
 
   void turnOn(int time) {
+    repeatBreathing = false;
     independentControl = false;
     dimming = true;
     dimTimer.limit = time;
@@ -129,6 +131,7 @@ class Strip {
   }
 
   void turnOff() {
+    repeatBreathing = false;
     independentControl = false;
     dimming = false;
     alpha = 0;
@@ -137,6 +140,7 @@ class Strip {
   }
 
   void turnOff(int time) {
+    repeatBreathing = false;
     independentControl = false;
     dimming = true;
     dimTimer.limit = time;
@@ -146,6 +150,7 @@ class Strip {
   }
 
   void turnOnFor(int time) {
+    repeatBreathing = false;
     blink = true;
     turnOn();
     turnOnTimer.limit = time;
