@@ -1,6 +1,4 @@
-// add
 Strip strip;
-
 void setup() {
   size(1000, 500);
   background(0);
@@ -12,6 +10,7 @@ void draw() {
 
   strip.update();
   strip.render();
+
 }
 
 void keyPressed() {
@@ -27,9 +26,17 @@ void keyPressed() {
   if (key == '4') {
     strip.turnOff(2000);
   }
-
   if (key == '5') {
-    strip.setLimit(1000);
+    strip.dimRepeat(1, 1000);
+  }
+  if (key == '6') {
+    strip.dimRepeat(3, 1000);
+  }
+  if (key == '7') {
+    strip.blink();
+  }
+  if (key == '8') {
+    strip.elapseTrigger();
   }
 }
 
