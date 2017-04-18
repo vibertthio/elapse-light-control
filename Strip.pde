@@ -30,11 +30,13 @@ class Strip {
   int elapseLength = 10;
   int elapseEdge = 500;
 
-  Strip(int _id, float _a) {
+  Strip(int _id, float _a, float _x, float _y) {
     id = _id;
     angle = _a;
-    xpos = width / 2 - length / 2;
-    ypos = height / 2;
+    // xpos = width / 2 - length / 2;
+    // ypos = height / 2;
+    xpos = _x;
+    ypos = _y;
     initLights();
 
     // Timers

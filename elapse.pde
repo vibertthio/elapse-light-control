@@ -2,47 +2,55 @@ import controlP5.*;
 ControlP5 cp5;
 Accordion accordion;
 
+
 color c = color(0, 160, 100);
-Strip strip;
+Strip[] strips;
+int nOfStrips = 12;
 void setup() {
-  size(1000, 500);
+  size(1000, 800);
   background(0);
-  strip = new Strip(0, 20);
+
+
+  strips = new Strip[nOfStrips];
+  for (int i = 0; i < nOfStrips; i++) {
+    strips[i] = new Strip(i, 0, width / 2, 50 + 50 * i);
+  }
   gui();
 }
 
 void draw() {
   background(0);
-
-  strip.update();
-  strip.render();
+  for (int i = 0; i < nOfStrips; i++) {
+    strips[i].update();
+    strips[i].render();
+  }
 
 }
 
 void keyPressed() {
   if (key == '1') {
-    strip.turnOn();
+    strips[0].turnOn();
   }
   if (key == '2') {
-    strip.turnOff();
+    strips[0].turnOff();
   }
   if (key == '3') {
-    strip.turnOn(300);
+    strips[0].turnOn(300);
   }
   if (key == '4') {
-    strip.turnOff(300);
+    strips[0].turnOff(300);
   }
   if (key == '5') {
-    strip.dimRepeat(1, 300);
+    strips[0].dimRepeat(1, 300);
   }
   if (key == '6') {
-    strip.dimRepeat(3, 300);
+    strips[0].dimRepeat(3, 300);
   }
   if (key == '7') {
-    strip.blink();
+    strips[0].blink();
   }
   if (key == '8') {
-    strip.elapseTrigger();
+    strips[0].elapseTrigger();
   }
 }
 
@@ -148,19 +156,19 @@ void gui() {
 void radio(int theC) {
   switch(theC) {
     case(0):
-      strip.turnOn(300);
+      strips[0].turnOn(300);
       break;
     case(1):
-      strip.turnOff(300);
+      strips[0].turnOff(300);
       break;
     case(2):
-      strip.dimRepeat(1, 300);
+      strips[0].dimRepeat(1, 300);
       break;
     case(3):
-      strip.blink();
+      strips[0].blink();
       break;
     case(4):
-      strip.elapseTrigger();
+      strips[0].elapseTrigger();
       break;
   }
 }
