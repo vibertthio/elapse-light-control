@@ -1,3 +1,4 @@
+// add
 Strip strip;
 
 void setup() {
