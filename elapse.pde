@@ -11,6 +11,19 @@ int nOfStrips_1= 4;
 int nOfStrips_2 = 4;
 int nOfStrips_3 = 4;
 
+//Strip s1;
+//Strip s2;
+//Strip s3;
+//Strip s4;
+//Strip s6;
+//Strip s7;
+//Strip s8;
+//Strip s9;
+//Strip s10;
+//Strip s11;
+//Strip s12;
+
+
 void setup() {
   size(1400, 800);
   background(0);
@@ -170,7 +183,7 @@ void gui() {
 
   cp5.addBang("bang")
      .setPosition(10,20)
-     .setSize(100,100)
+     .setSize(30,30)
      .moveTo(g1)
      .plugTo(this,"shuffle");
      ;
@@ -185,11 +198,11 @@ void gui() {
      .setPosition(10,20)
      .setItemWidth(20)
      .setItemHeight(20)
-     .addItem("black", 0)
-     .addItem("red", 1)
-     .addItem("green", 2)
-     .addItem("blue", 3)
-     .addItem("grey", 4)
+     .addItem("dim in", 0)
+     .addItem("dim out", 1)
+     .addItem("dim 1 repeat", 2)
+     .addItem("dim 3 repeat", 3)
+     .addItem("flowing", 4)
      .setColorLabel(color(255))
      .activate(2)
      .moveTo(g2)
@@ -235,8 +248,8 @@ void gui() {
 
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.open(0,1,2);}}, 'o');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.close(0,1,2);}}, 'c');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setWidth(300);}}, '1');
-  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setPosition(0,0);accordion.setItemHeight(190);}}, '2');
+//  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setWidth(300);}}, '1');
+//  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setPosition(0,0);accordion.setItemHeight(190);}}, '2');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setCollapseMode(ControlP5.ALL);}}, '3');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setCollapseMode(ControlP5.SINGLE);}}, '4');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {cp5.remove("myGroup1");}}, '0');
@@ -255,19 +268,59 @@ void gui() {
 void radio(int theC) {
   switch(theC) {
     case(0):
-      strips1[0].turnOn(300);
+      for (int i = 0; i < nOfStrips_1; i++) {
+        strips1[i].turnOn(300);
+      }
+      for (int j = 0; j < nOfStrips_2; j++) {
+        strips2[j].turnOn(300);
+      }
+      for (int k = 0; k < nOfStrips_3; k++) {
+        strips3[k].turnOn(300);
+      }
       break;
     case(1):
-      strips1[0].turnOff(300);
+      for (int i = 0; i < nOfStrips_1; i++) {
+        strips1[i].turnOff(300);
+      }
+      for (int j = 0; j < nOfStrips_2; j++) {
+        strips2[j].turnOff(300);
+      }
+      for (int k = 0; k < nOfStrips_3; k++) {
+        strips3[k].turnOff(300);
+      }
       break;
     case(2):
-      strips1[0].dimRepeat(3, 30);
+      for (int i = 0; i < nOfStrips_1; i++) {
+        strips1[i].dimRepeat(1, 30);
+      }
+      for (int j = 0; j < nOfStrips_2; j++) {
+        strips2[j].dimRepeat(1, 30);
+      }
+      for (int k = 0; k < nOfStrips_3; k++) {
+        strips3[k].dimRepeat(1, 30);
+      }
       break;
     case(3):
-      strips1[0].blink();
+      for (int i = 0; i < nOfStrips_1; i++) {
+        strips1[i].dimRepeat(3, 30);
+      }
+      for (int j = 0; j < nOfStrips_2; j++) {
+        strips2[j].dimRepeat(3, 30);
+      }
+      for (int k = 0; k < nOfStrips_3; k++) {
+        strips3[k].dimRepeat(3, 30);
+      }
       break;
     case(4):
-      strips1[0].elapseTrigger();
+      for (int i = 0; i < nOfStrips_1; i++) {
+        strips1[i].elapseTrigger();
+      }
+      for (int j = 0; j < nOfStrips_2; j++) {
+        strips2[j].elapseTrigger();
+      }
+      for (int k = 0; k < nOfStrips_3; k++) {
+        strips3[k].elapseTrigger();
+      }
       break;
   }
 }
