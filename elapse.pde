@@ -4,53 +4,152 @@ Accordion accordion;
 
 
 color c = color(0, 160, 100);
-Strip[] strips;
-int nOfStrips = 12;
+Strip[] strips1;
+Strip[] strips2;
+Strip[] strips3;
+int nOfStrips_1= 4;
+int nOfStrips_2 = 4;
+int nOfStrips_3 = 4;
+
 void setup() {
-  size(1000, 800);
+  size(1400, 800);
   background(0);
 
+  strips1 = new Strip[nOfStrips_1];
+  for (int i = 0; i < nOfStrips_1; i++) {
+    strips1[i] = new Strip(i, 0, width / 2, 100 + 50 * i);
+  }
+  gui();
 
-  strips = new Strip[nOfStrips];
-  for (int i = 0; i < nOfStrips; i++) {
-    strips[i] = new Strip(i, 0, width / 2, 50 + 50 * i);
+  strips2 = new Strip[nOfStrips_2];
+  for (int j = 0; j < nOfStrips_2; j++) {
+    strips2[j] = new Strip(j, 0, 400, 300 + 50 * j);
+  }
+  gui();
+
+  strips3 = new Strip[nOfStrips_2];
+  for (int k = 0; k < nOfStrips_2; k++) {
+    strips3[k] = new Strip(k, 0, 1000, 300 + 50 * k);
   }
   gui();
 }
 
 void draw() {
   background(0);
-  for (int i = 0; i < nOfStrips; i++) {
-    strips[i].update();
-    strips[i].render();
+
+  for (int i = 0; i < nOfStrips_1; i++) {
+    strips1[i].update();
+    strips1[i].render();
   }
 
+  for (int j = 0; j < nOfStrips_2; j++) {
+    strips2[j].update();
+    strips2[j].render();
+  }
+
+  for (int k = 0; k < nOfStrips_3; k++) {
+    strips3[k].update();
+    strips3[k].render();
+  }
 }
 
 void keyPressed() {
+
   if (key == '1') {
-    strips[0].turnOn();
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].turnOn();
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].turnOn();
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].turnOn();
+    }
+    //myPort.write(0);
   }
   if (key == '2') {
-    strips[0].turnOff();
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].turnOff();
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].turnOff();
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].turnOff();
+    }
+    //myPort.write(1);
   }
   if (key == '3') {
-    strips[0].turnOn(300);
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].turnOn(300);
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].turnOn(300);
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].turnOn(300);
+    }
+    //myPort.write(2);
   }
   if (key == '4') {
-    strips[0].turnOff(300);
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].turnOff(300);
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].turnOff(300);
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].turnOff(300);
+    }
+    //myPort.write(3);
   }
   if (key == '5') {
-    strips[0].dimRepeat(1, 300);
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].dimRepeat(1,50);
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].dimRepeat(1,50);
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].dimRepeat(1,50);
+    }
+    //myPort.write(4);
   }
   if (key == '6') {
-    strips[0].dimRepeat(3, 300);
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].dimRepeat(3, 30);
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].dimRepeat(3, 30);
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].dimRepeat(3, 30);
+    }
+    //myPort.write(5);
   }
   if (key == '7') {
-    strips[0].blink();
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].blink();
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].blink();
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].blink();
+    }
+    //myPort.write(6);
   }
   if (key == '8') {
-    strips[0].elapseTrigger();
+    for (int i = 0; i < nOfStrips_1; i++) {
+      strips1[i].elapseTrigger();
+    }
+    for (int j = 0; j < nOfStrips_2; j++) {
+      strips2[j].elapseTrigger();
+    }
+    for (int k = 0; k < nOfStrips_3; k++) {
+      strips3[k].elapseTrigger();
+    }
+    //myPort.write(7);
   }
 }
 
@@ -156,19 +255,19 @@ void gui() {
 void radio(int theC) {
   switch(theC) {
     case(0):
-      strips[0].turnOn(300);
+      strips1[0].turnOn(300);
       break;
     case(1):
-      strips[0].turnOff(300);
+      strips1[0].turnOff(300);
       break;
     case(2):
-      strips[0].dimRepeat(1, 300);
+      strips1[0].dimRepeat(3, 30);
       break;
     case(3):
-      strips[0].blink();
+      strips1[0].blink();
       break;
     case(4):
-      strips[0].elapseTrigger();
+      strips1[0].elapseTrigger();
       break;
   }
 }
