@@ -1,7 +1,12 @@
+import codeanticode.syphon.*;
 import controlP5.*;
+
+// controlP5
 ControlP5 cp5;
 Accordion accordion;
 
+// Syphon
+SyphonServer server;
 
 color c = color(0, 160, 100);
 Strip[] strips1;
@@ -11,21 +16,12 @@ int nOfStrips_1= 4;
 int nOfStrips_2 = 4;
 int nOfStrips_3 = 4;
 
-//Strip s1;
-//Strip s2;
-//Strip s3;
-//Strip s4;
-//Strip s6;
-//Strip s7;
-//Strip s8;
-//Strip s9;
-//Strip s10;
-//Strip s11;
-//Strip s12;
-
-
+void settings() {
+  size(1400, 800, P3D);
+  PJOGL.profile=1;
+}
 void setup() {
-  size(1400, 800);
+
   background(0);
 
   strips1 = new Strip[nOfStrips_1];
@@ -45,6 +41,8 @@ void setup() {
     strips3[k] = new Strip(k, 0, 1000, 300 + 50 * k);
   }
   gui();
+  server = new SyphonServer(this, "Processing Syphon");
+
 }
 
 void draw() {
@@ -64,6 +62,8 @@ void draw() {
     strips3[k].update();
     strips3[k].render();
   }
+
+  server.sendScreen();
 }
 
 void keyPressed() {
