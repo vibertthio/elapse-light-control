@@ -7,6 +7,7 @@ Accordion accordion;
 
 // Syphon
 SyphonServer server;
+PGraphics canvas;
 
 color c = color(0, 160, 100);
 Strip[] strips1;
@@ -20,33 +21,37 @@ void settings() {
   size(1400, 800, P3D);
   PJOGL.profile=1;
 }
-void setup() {
 
+void setup() {
   background(0);
 
   strips1 = new Strip[nOfStrips_1];
   for (int i = 0; i < nOfStrips_1; i++) {
     strips1[i] = new Strip(i, 0, width / 2, 100 + 50 * i);
   }
-  gui();
 
   strips2 = new Strip[nOfStrips_2];
   for (int j = 0; j < nOfStrips_2; j++) {
     strips2[j] = new Strip(j, 0, 400, 300 + 50 * j);
   }
-  gui();
 
   strips3 = new Strip[nOfStrips_2];
   for (int k = 0; k < nOfStrips_2; k++) {
     strips3[k] = new Strip(k, 0, 1000, 300 + 50 * k);
   }
+
   gui();
+  canvas = createGraphics(width, height, P3D);
   server = new SyphonServer(this, "Processing Syphon");
 
 }
 
 void draw() {
   background(0);
+
+  canvas.beginDraw();
+  canvas.background(0);
+
 
   for (int i = 0; i < nOfStrips_1; i++) {
     strips1[i].update();
@@ -63,7 +68,9 @@ void draw() {
     strips3[k].render();
   }
 
-  server.sendScreen();
+  image(canvas, 0, 0);
+  canvas.endDraw();
+  server.sendImage(canvas);
 }
 
 void keyPressed() {

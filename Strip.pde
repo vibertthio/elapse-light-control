@@ -97,20 +97,19 @@ class Strip {
         lights[i].render();
       }
     } else {
-      pushMatrix();
+      canvas.pushMatrix();
 
-      translate(xpos, ypos);
+      canvas.translate(xpos, ypos);
 
       for (int i = 0; i < nOfLED; i++) {
         float x = length * i / nOfLED;
-        noStroke();
-        fill(255, alpha);
-        ellipse(x, 0, 5, 5);
+        canvas.noStroke();
+        canvas.fill(255, alpha);
+        canvas.ellipse(x, 0, 5, 5);
       }
 
-      popMatrix();
+      canvas.popMatrix();
     }
-
   }
 
   void turnOn() {
@@ -237,14 +236,14 @@ class Light {
   }
 
   void render() {
-    pushMatrix();
+    canvas.pushMatrix();
 
-    translate(xpos, ypos);
-    noStroke();
-    fill(255, alpha);
-    ellipse(0, 0, 5, 5);
+    canvas.translate(xpos, ypos);
+    canvas.noStroke();
+    canvas.fill(255, alpha);
+    canvas.ellipse(0, 0, 5, 5);
 
-    popMatrix();
+    canvas.popMatrix();
   }
 
   void turnOn() {
