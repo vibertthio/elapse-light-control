@@ -65,7 +65,6 @@ void mousePressed() {
 }
 
 
-
 void gui() {
 
   cp5 = new ControlP5(this);
@@ -111,6 +110,24 @@ void gui() {
      .setSize(30,30)
      .moveTo(g1)
      .setId(5)
+     ;
+  cp5.addBang("bang_6")
+     .setPosition(90,20)
+     .setSize(30,30)
+     .moveTo(g1)
+     .setId(6)
+     ;
+  cp5.addBang("bang_7")
+     .setPosition(90,70)
+     .setSize(30,30)
+     .moveTo(g1)
+     .setId(7)
+     ;
+  cp5.addBang("bang_8")
+     .setPosition(90,120)
+     .setSize(30,30)
+     .moveTo(g1)
+     .setId(8)
      ;
 
   // group number 2, contains a radiobutton
@@ -173,8 +190,8 @@ void gui() {
 
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.open(0,1,2);}}, 'o');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.close(0,1,2);}}, 'c');
-//  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setWidth(300);}}, '1');
-//  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setPosition(0,0);accordion.setItemHeight(190);}}, '2');
+  //  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setWidth(300);}}, '1');
+  //  cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setPosition(0,0);accordion.setItemHeight(190);}}, '2');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setCollapseMode(ControlP5.ALL);}}, '3');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {accordion.setCollapseMode(ControlP5.SINGLE);}}, '4');
   cp5.mapKeyFor(new ControlKey() {public void keyEvent() {cp5.remove("myGroup1");}}, '0');
@@ -191,11 +208,11 @@ void gui() {
 }
 
 public void controlEvent(ControlEvent theEvent) {
-  println(
-  "## controlEvent / id:"+theEvent.controller().getId()+
-    " / name:"+theEvent.controller().getName()+
-    " / value:"+theEvent.controller().getValue()
-    );
+  // println(
+  // "## controlEvent / id:"+theEvent.controller().getId()+
+  //   " / name:"+theEvent.controller().getName()+
+  //   " / value:"+theEvent.controller().getValue()
+  //   );
   switch(theEvent.controller().getId()) {
     case(0):
       system.turnOn(300);
@@ -211,6 +228,18 @@ public void controlEvent(ControlEvent theEvent) {
       break;
     case(4):
       system.elapseTrigger();
+      break;
+    case(5):
+      system.triggerSequence(0, 100);
+      break;
+    case(6):
+      system.triggerSequence(1, 100);
+      break;
+    case(7):
+      system.triggerSequence(2, 100);
+      break;
+    case(8):
+      system.triggerSequence(3, 100);
       break;
   }
 }
