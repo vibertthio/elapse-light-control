@@ -1,4 +1,4 @@
-final int nOfLED = 50;
+final int nOfLED = 60;
 
 class Strip {
   int id;
@@ -19,6 +19,7 @@ class Strip {
   float alpha = 255;
   float targetAlpha;
   float initialAlpha;
+  int dimTime = 0;
 
   // blink function
   boolean blink = false;
@@ -84,7 +85,7 @@ class Strip {
       } else if (blink) {
         println("blink check!!");
         if (turnOnTimer.liner() == 1) {
-          turnOff();
+          turnOff(dimTime);
           blink = false;
         }
       }
@@ -153,7 +154,17 @@ class Strip {
   void turnOnFor(int time) {
     repeatBreathing = false;
     blink = true;
+    dimTime = 0;
     turnOn();
+    turnOnTimer.limit = time;
+    turnOnTimer.startTimer();
+  }
+
+  void turnOnFor(int time, int ll) {
+    repeatBreathing = false;
+    blink = true;
+    dimTime = ll;
+    turnOn(dimTime);
     turnOnTimer.limit = time;
     turnOnTimer.startTimer();
   }
