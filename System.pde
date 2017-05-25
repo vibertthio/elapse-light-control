@@ -15,7 +15,8 @@ class System {
     }
   }
 
-  void render() {
+
+  public void render() {
     canvas.beginDraw();
     canvas.background(0);
 
