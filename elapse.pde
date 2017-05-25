@@ -1,5 +1,8 @@
 import codeanticode.syphon.*;
 import controlP5.*;
+import themidibus.*;
+import processing.serial.*;
+
 
 // controlP5
 ControlP5 cp5;
@@ -8,6 +11,12 @@ Accordion accordion;
 // Syphon
 SyphonServer server;
 PGraphics canvas;
+
+// MIDI
+MidiBus midi;
+
+// Arduino
+Serial myPort;
 
 System system;
 
@@ -23,8 +32,18 @@ void setup() {
   canvas = createGraphics(width, height, P3D);
   system = new System();
 
+  // controlP5
   gui();
+
+  // Syphon
   server = new SyphonServer(this, "Processing Syphon");
+
+  // midi
+  midi = new MidiBus(this, "Akai APC20", -1);
+
+  // Arduino
+  printArray(Serial.list());
+  myPort = new Serial(this, Serial.list()[3], 9600);
 }
 
 void draw() {
@@ -32,7 +51,7 @@ void draw() {
   system.render();
 }
 
-void keyPressed() {
+/*void keyPressed() {
 
   if (key == '1') {
     system.turnOn();
@@ -59,11 +78,7 @@ void keyPressed() {
     system.elapseTrigger();
   }
 }
-
-void mousePressed() {
-
-}
-
+*/
 
 void gui() {
 
@@ -75,55 +90,55 @@ void gui() {
                 .setBackgroundHeight(200)
                 ;
 
-  cp5.addBang("bang_0")
+  cp5.addBang("dim_on")
      .setPosition(10,20)
      .setSize(30,30)
      .moveTo(g1)
      .setId(0)
      ;
-  cp5.addBang("bang_1")
+  cp5.addBang("dim_off")
      .setPosition(10,70)
      .setSize(30,30)
      .moveTo(g1)
      .setId(1)
      ;
-  cp5.addBang("bang_2")
+  cp5.addBang("Repeat3")
      .setPosition(10,120)
      .setSize(30,30)
      .moveTo(g1)
      .setId(2)
      ;
-  cp5.addBang("bang_3")
+  cp5.addBang("blink")
      .setPosition(50,20)
      .setSize(30,30)
      .moveTo(g1)
      .setId(3)
      ;
-  cp5.addBang("bang_4")
+  cp5.addBang("elapse")
      .setPosition(50,70)
      .setSize(30,30)
      .moveTo(g1)
      .setId(4)
      ;
-  cp5.addBang("bang_5")
+  cp5.addBang("S1")
      .setPosition(50,120)
      .setSize(30,30)
      .moveTo(g1)
      .setId(5)
      ;
-  cp5.addBang("bang_6")
+  cp5.addBang("S2")
      .setPosition(90,20)
      .setSize(30,30)
      .moveTo(g1)
      .setId(6)
      ;
-  cp5.addBang("bang_7")
+  cp5.addBang("S3")
      .setPosition(90,70)
      .setSize(30,30)
      .moveTo(g1)
      .setId(7)
      ;
-  cp5.addBang("bang_8")
+  cp5.addBang("S4")
      .setPosition(90,120)
      .setSize(30,30)
      .moveTo(g1)
@@ -221,7 +236,7 @@ public void controlEvent(ControlEvent theEvent) {
       system.turnOff(300);
       break;
     case(2):
-      system.dimRepeat(3, 500);
+      system.dimRepeat(3, 50);
       break;
     case(3):
       system.blink();
@@ -243,3 +258,80 @@ public void controlEvent(ControlEvent theEvent) {
       break;
   }
 }
+
+// midi
+void noteOn(int channel, int pitch, int velocity) { //piano //CC是有區間,連續變化的
+  // Receive a noteOn
+  println();
+  println("Note On:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Pitch:"+pitch);
+  println("Velocity:"+velocity);
+  println("****************************");
+
+//Bang effects
+  if (pitch == 53) {
+    if (channel == 0) {
+      system.dimRepeat(1,80);
+    } else if(channel == 2) {
+      system.dimRepeat(3,50);
+    } else if(channel == 6) {
+      system.turnOn(300);
+    } else if(channel == 7) {
+      // system.turnOff(300);
+      system.turnFourRandSequence(50);
+    }
+  }
+
+  if (pitch == 52) {
+    if (channel == 0) {
+      system.elapseTrigger();
+    }
+  }
+}
+//Processing to Arduino (for tube control)
+void keyPressed()
+{
+  if(key == 'q')
+  {
+    myPort.write(1);
+  }
+  if(key == 'w')
+  {
+    myPort.write(2);
+  }
+  if(key == 'e')
+  {
+    myPort.write(3);
+  }
+  if(key == 'r')
+  {
+    myPort.write(4);
+  }
+  if(key == 't')
+  {
+    myPort.write(5);
+  }
+  if(key == 'y')
+  {
+    myPort.write(6);
+  }
+
+  if(key == 'a')
+  {
+    myPort.write(7);
+  }
+  if(key == 's')
+  {
+    myPort.write(8);
+  }
+
+}
+
+//Auto effects
+  /*if (pitch == 50) {
+    if (channel == 0){
+      system.
+    }
+  */

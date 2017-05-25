@@ -52,12 +52,40 @@ class System {
     }
   }
 
+  void turnOnFor(int time, int ll) {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].turnOnFor(time, ll);
+    }
+  }
+
   void turnOneOn(int id) {
     strips[id].turnOn();
   }
 
   void turnOneOn(int id, int time) {
     strips[id].turnOn(time);
+  }
+
+  void turnOneOnFor(int id, int time, int ll) {
+    strips[id].turnOnFor(time, ll);
+  }
+
+  void turnRandOneOnFor(int time, int ll) {
+    turnOneOnFor(int(random(nOfStrips)),time, ll);
+  }
+
+  void turnRandMultipleOnFor(int time, int ll) {
+    final int NUM = int(random(nOfStrips));
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i != NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      turnOneOnFor(nums.get(i), time, ll);
+    }
   }
 
   boolean turnEachOnActivate = false;
@@ -124,12 +152,13 @@ class System {
   int turnSequenceTime = 0;
   int turnSequenceIndex = 0;
   int turnSequenceCount = 0;
-  int turnSequenceCountLimit = 5;
+  int turnSequenceCountLimit = 2;
   int[][] sequenceSet = {
     { 0, 2, 5, 7, 8, 10 },
     { 0, 4, 8 },
-    { 0, 1, 2, 3 },
+    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
     { 0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11 },
+    { 0, 0, 0, 0},
   };
   int[] sequence;
 
@@ -154,5 +183,21 @@ class System {
     }
   }
 
+  // position 4
+  final int RANDSEQUENCE = 4;
+  void turnFourRandSequence(int time) {
+    final int NUM = 4;
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i != NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
+    }
+    triggerSequence(RANDSEQUENCE, time);
+  }
 
 }
