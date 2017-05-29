@@ -39,11 +39,11 @@ void setup() {
   server = new SyphonServer(this, "Processing Syphon");
 
   // midi
-  midi = new MidiBus(this, "Akai APC20", -1);
+  midi = new MidiBus(this, 1, -1);
 
   // Arduino
   printArray(Serial.list());
-  myPort = new Serial(this, Serial.list()[3], 9600);
+  // myPort = new Serial(this, Serial.list()[3], 9600);
 }
 
 void draw() {
@@ -223,44 +223,47 @@ void gui() {
 }
 
 public void controlEvent(ControlEvent theEvent) {
-  // println(
-  // "## controlEvent / id:"+theEvent.controller().getId()+
-  //   " / name:"+theEvent.controller().getName()+
-  //   " / value:"+theEvent.controller().getValue()
-  //   );
-  switch(theEvent.controller().getId()) {
-    case(0):
-      system.turnOn(300);
-      break;
-    case(1):
-      system.turnOff(300);
-      break;
-    case(2):
-      system.dimRepeat(3, 50);
-      break;
-    case(3):
-      system.blink();
-      break;
-    case(4):
-      system.elapseTrigger();
-      break;
-    case(5):
-      system.triggerSequence(0, 100);
-      break;
-    case(6):
-      system.triggerSequence(1, 100);
-      break;
-    case(7):
-      system.triggerSequence(2, 100);
-      break;
-    case(8):
-      system.triggerSequence(3, 100);
-      break;
+  if (theEvent.isController()) {
+    // println(
+    // "## controlEvent / id:"+theEvent.controller().getId()+
+    //   " / name:"+theEvent.controller().getName()+
+    //   " / value:"+theEvent.controller().getValue()
+    //   );
+    switch(theEvent.controller().getId()) {
+      case(0):
+        system.turnOn(300);
+        break;
+      case(1):
+        system.turnOff(300);
+        break;
+      case(2):
+        system.dimRepeat(3, 50);
+        break;
+      case(3):
+        system.blink();
+        break;
+      case(4):
+        system.elapseTrigger();
+        break;
+      case(5):
+        system.triggerSequence(0, 100);
+        break;
+      case(6):
+        system.triggerSequence(1, 100);
+        break;
+      case(7):
+        system.triggerSequence(2, 100);
+        break;
+      case(8):
+        system.triggerSequence(3, 100);
+        break;
+    }
   }
 }
 
 // midi
-void noteOn(int channel, int pitch, int velocity) { //piano //CC是有區間,連續變化的
+void noteOn(int channel, int pitch, int velocity) {
+  //piano //CC是有區間,連續變化的
   // Receive a noteOn
   println();
   println("Note On:");
@@ -270,7 +273,7 @@ void noteOn(int channel, int pitch, int velocity) { //piano //CC是有區間,連
   println("Velocity:"+velocity);
   println("****************************");
 
-//Bang effects
+  //Bang effects
   if (pitch == 53) {
     if (channel == 0) {
       system.dimRepeat(1,80);
@@ -293,38 +296,32 @@ void noteOn(int channel, int pitch, int velocity) { //piano //CC是有區間,連
 //Processing to Arduino (for tube control)
 void keyPressed()
 {
-  if(key == 'q')
-  {
-    myPort.write(1);
-  }
-  if(key == 'w')
-  {
-    myPort.write(2);
-  }
-  if(key == 'e')
-  {
-    myPort.write(3);
-  }
-  if(key == 'r')
-  {
-    myPort.write(4);
-  }
-  if(key == 't')
-  {
-    myPort.write(5);
-  }
-  if(key == 'y')
-  {
-    myPort.write(6);
-  }
+  if (key == 'a') {
+    // system.dimRepeat(1, 20);
+    // system.dimRepeat(3, 50);
+    // system.turnFourRandSequence(50);
 
-  if(key == 'a')
-  {
-    myPort.write(7);
-  }
-  if(key == 's')
-  {
-    myPort.write(8);
+    // system.turnRandOneOnFor(20, 20);
+    // system.turnRandMultipleOnFor(20, 20);
+    // system.bangSequence(0, 100);
+    // system.bangFourRandSequence(20);
+
+
+    // 0, 7, 8
+    // system.bangSequence(0, 100);
+
+    // 3, 4, 11
+    // system.bangSequence(1, 100);
+
+    // 0, 3, 4, 7, 8, 11
+    // system.bangSequence(2, 100);
+
+    // system.bangComplexSequence(0);
+    // system.bangComplexSequence(1);
+
+    // system.bangComplexSequence(2);
+
+
   }
 
 }

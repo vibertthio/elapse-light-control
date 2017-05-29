@@ -30,6 +30,10 @@ class System {
       turnSequence();
     }
 
+    if (turnComplexSequenceActivate) {
+      turnComplexSequence();
+    }
+
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].update();
       strips[i].render();
@@ -76,6 +80,20 @@ class System {
 
   void turnRandMultipleOnFor(int time, int ll) {
     final int NUM = int(random(nOfStrips));
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i != NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      turnOneOnFor(nums.get(i), time, ll);
+    }
+  }
+
+  void turnMultipleOnFor(int time, int ll, int number) {
+    final int NUM = number;
     final IntList nums = new IntList(NUM);
 
     for (int rnd, i = 0; i != NUM; nums.append(rnd), ++i)
@@ -149,19 +167,36 @@ class System {
   }
 
   boolean turnSequenceActivate = false;
-  int turnSequenceTime = 0;
+  boolean bangSequence = false;
+  int turnSequenceTime = 100;
   int turnSequenceIndex = 0;
   int turnSequenceCount = 0;
   int turnSequenceCountLimit = 2;
   int[][] sequenceSet = {
-    { 0, 2, 5, 7, 8, 10 },
-    { 0, 4, 8 },
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+    { 0, 7, 8 },
+    { 3, 4, 11 },
+    { 0, 3, 4, 7, 8, 11 },
     { 0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11 },
+    { 0, 11, 4, 8 },
+    { 9, 2, 1, 10 },
+    { 0, 0, 0},
+    { 0, 0, 0},
     { 0, 0, 0, 0},
   };
   int[] sequence;
 
+  void triggerSequence() {
+    turnSequenceActivate = !turnSequenceActivate;
+    turnSequenceCount = 0;
+  }
+
+  void triggerSequence(int index) {
+    turnOff();
+    turnSequenceActivate = !turnSequenceActivate;
+    sequence = sequenceSet[index%sequenceSet.length];
+    turnSequenceIndex = 0;
+    turnSequenceCount = 0;
+  }
   void triggerSequence(int index, int time) {
     turnOff();
     turnSequenceActivate = !turnSequenceActivate;
@@ -171,25 +206,94 @@ class System {
     turnSequenceCount = 0;
   }
 
+  void bangSequence(int index, int time) {
+    triggerSequence(index, time);
+    bangSequence = true;
+  }
+
   void turnSequence() {
     turnSequenceCount++;
     if (turnSequenceCount > turnSequenceCountLimit) {
       println(turnSequenceIndex);
-      int prev = (turnSequenceIndex > 0)? (turnSequenceIndex - 1) : (sequence.length - 1);
-      turnOneOn(sequence[turnSequenceIndex], turnSequenceTime);
-      turnOneOff(sequence[prev], turnSequenceTime);
+      // int prev = (turnSequenceIndex > 0)? (turnSequenceIndex - 1) : (sequence.length - 1);
+      // turnOneOn(sequence[turnSequenceIndex], turnSequenceTime);
+      // turnOneOff(sequence[prev], turnSequenceTime);
+      turnOneOnFor(sequence[turnSequenceIndex], turnSequenceTime, 20);
       turnSequenceIndex = (turnSequenceIndex + 1) % sequence.length;
       turnSequenceCount = 0;
+
+      if (bangSequence && turnSequenceIndex == 0) {
+        triggerSequence();
+        bangSequence = false;
+      }
     }
   }
 
+  // complex sequence
+  boolean turnComplexSequenceActivate = false;
+  boolean bangComplexSequence = false;
+  int complexSequenceTime = 20;
+  int complexSequenceDur = 50;
+  int complexSequenceIndex = 0;
+  int complexSequenceCount = 0;
+  int complexSequenceCountLimit = 5;
+  int[][][] complexSequenceSet = {
+    {
+      {0, 1, 2, 3},
+      {4, 5, 6, 7},
+      {8, 9, 10, 11},
+    },
+    {
+      {8, 9, 10, 11},
+      {4, 5, 6, 7},
+      {0, 1, 2, 3},
+    },
+    {
+      {0, 4, 8},
+      {1, 5, 9},
+      {2, 6, 10},
+      {3, 7, 11},
+    },
+  };
+  int[][] complexSequence;
+  void triggerComplexSequence() {
+    turnComplexSequenceActivate = !turnComplexSequenceActivate;
+    complexSequenceCount = 0;
+  }
+  void triggerComplexSequence(int index) {
+    turnComplexSequenceActivate = !turnComplexSequenceActivate;
+    complexSequence = complexSequenceSet[index%complexSequenceSet.length];
+    complexSequenceIndex = 0;
+    complexSequenceCount = 0;
+  }
+  void bangComplexSequence(int index) {
+    triggerComplexSequence(index);
+    bangComplexSequence = true;
+  }
+  void turnComplexSequence() {
+    complexSequenceCount++;
+    if (complexSequenceCount > complexSequenceCountLimit) {
+      for (int i = 0, n = complexSequence[complexSequenceIndex].length; i < n; i++) {
+        turnOneOnFor(complexSequence[complexSequenceIndex][i], complexSequenceDur, complexSequenceTime);
+      }
+      complexSequenceIndex = (complexSequenceIndex + 1) % complexSequence.length;
+      complexSequenceCount = 0;
+
+      if (bangComplexSequence && complexSequenceIndex == 0) {
+        triggerComplexSequence();
+        bangComplexSequence = false;
+      }
+    }
+  }
+
+
   // position 4
-  final int RANDSEQUENCE = 4;
+  final int RANDSEQUENCE = 8;
   void turnFourRandSequence(int time) {
     final int NUM = 4;
     final IntList nums = new IntList(NUM);
 
-    for (int rnd, i = 0; i != NUM; nums.append(rnd), ++i)
+    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
     do {
       rnd = (int) random(nOfStrips);
     } while (nums.hasValue(rnd));
@@ -198,6 +302,20 @@ class System {
       sequenceSet[RANDSEQUENCE][i] = nums.get(i);
     }
     triggerSequence(RANDSEQUENCE, time);
+  }
+  void bangFourRandSequence(int time) {
+    final int NUM = 4;
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
+    }
+    bangSequence(RANDSEQUENCE, time);
   }
 
 }
