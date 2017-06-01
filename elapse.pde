@@ -21,6 +21,7 @@ Serial myPort;
 System system;
 
 color c = color(0, 160, 100);
+// final int nOfLED = 60;
 
 void settings() {
   size(1400, 800, P3D);
@@ -243,7 +244,6 @@ public void controlEvent(ControlEvent theEvent) {
         system.blink();
         break;
       case(4):
-        system.elapseTrigger();
         break;
       case(5):
         system.triggerSequence(0, 100);
@@ -289,7 +289,7 @@ void noteOn(int channel, int pitch, int velocity) {
 
   if (pitch == 52) {
     if (channel == 0) {
-      system.elapseTrigger();
+      // system.elapseTrigger();
     }
   }
 }
@@ -368,7 +368,7 @@ void keyPressed() {
     // system.triggerComplexSequence(0);
 
 
-    // system.elapseTrigger();
+    system.triggerIndependentControl();
 
   }
 
@@ -377,6 +377,10 @@ void keyPressed() {
     Test for trigger logic
     *******/
     // system.triggerComplexSequence(2);
+
+    // system.bangElapseOne(0, 30, 0, false);
+    system.bangElapseLeft();
+    system.bangElapseRight();
   }
 
 }

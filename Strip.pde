@@ -1,4 +1,4 @@
-final int nOfLED = 60;
+final int nOfLED = 40;
 
 class Strip {
   int id;
@@ -25,14 +25,7 @@ class Strip {
   boolean blink = false;
   TimeLine turnOnTimer;
 
-  // elapse
 
-  boolean elaspsing = false;
-  int elapseStartIndex;
-  int elapseEndIndex;
-  boolean elapseDirection = true; // true for right, false for left
-  int elapseIndex = 0;
-  int elapseEdge = 250;
 
   // easing
   boolean easing = false;
@@ -57,6 +50,7 @@ class Strip {
   }
 
   void initLights() {
+    elapses = new ArrayList<Elapse>();
     lights = new Light[nOfLED];
     for (int i = 0; i < nOfLED; i++) {
       lights[i] = new Light(xpos + length * i / nOfLED, ypos);
@@ -104,9 +98,22 @@ class Strip {
   }
 
   void lightsUpdate() {
-    if (elaspsing) {
-      lights[elapseIndex].turnOnFor(5, elapseEdge);
-      elapseIndex = (elapseIndex + 1) % nOfLED;
+    // if (elapsing) {
+    //   elapseCount++;
+    //   if (elapseCount > elapseCountLimit) {
+    //     elapseCount = 0;
+    //     lights[elapseIndex].turnOnFor(5, elapseEdge);
+    //     int dif = (elapseDirection) ? 1 : (-1);
+    //     elapseIndex = (elapseIndex + dif) % nOfLED;
+    //     if (elapseIndex == elapseEndIndex) {
+    //       elapsing = false;
+    //     }
+    //   }
+    // }
+    // elapse.update();
+
+    for (int i = 0, n = elapses.size(); i < n; i++) {
+      elapses.get(i).update();
     }
 
     for (int i = 0; i < nOfLED; i++) {
@@ -238,14 +245,44 @@ class Strip {
     independentControl = !independentControl;
   }
 
+
   void triggerIndependentControl() {
     independentControl = !independentControl;
   }
-  void elapseTrigger() {
-    independentControl = !independentControl;
-    for (int i = 0; i < nOfLED; i++) {
-      lights[i].turnOff();
+  void setIndependentControl(boolean s) {
+    independentControl = s;
+  }
+
+  // elapse
+  ArrayList<Elapse> elapses;
+  // boolean elapsing = false;
+  // int elapseStartIndex;
+  // int elapseEndIndex;
+  // boolean elapseDirection = true; // true for right, false for left
+  // int elapseIndex = 0;
+  // int elapseEdge = 500;
+  // int elapseCount = 0;
+  // int elapseCountLimit = 0;
+  //
+  // void bangElapse(int st, int en, boolean dir) {
+  //   elapsing = true;
+  //   elapseStartIndex = constrain(st, 0, nOfLED - 1);
+  //   elapseEndIndex = constrain(en, 0, nOfLED - 1);
+  //   elapseDirection = dir;
+  //   elapseIndex = constrain(st, 0, nOfLED - 1);
+  //   elapseCount = 0;
+  // }
+  void bangElapse(int st, int en, boolean dir) {
+    for (int i = 0, n = elapses.size(); i < n; i++) {
+      Elapse e = elapses.get(i);
+      if (!e.elapsing) {
+        e.bang(st, en, dir);
+        return;
+      }
     }
+    Elapse e = new Elapse(this);
+    elapses.add(e);
+    e.bang(st, en, dir);
   }
 
   // dim 3 times
@@ -276,14 +313,53 @@ class Strip {
 
 }
 
+class Elapse {
+  Strip strip;
+
+  boolean elapsing = false;
+  int elapseStartIndex;
+  int elapseEndIndex;
+  boolean elapseDirection = true; // true for right, false for left
+  int elapseIndex = 0;
+  int elapseEdge = 500;
+  int elapseCount = 0;
+  int elapseCountLimit = 0;
+
+  Elapse(Strip _s) { strip = _s; }
+
+  void bang(int st, int en, boolean dir) {
+    elapsing = true;
+    elapseStartIndex = constrain(st, 0, nOfLED - 1);
+    elapseEndIndex = constrain(en, 0, nOfLED - 1);
+    elapseDirection = dir;
+    elapseIndex = constrain(st, 0, nOfLED - 1);
+    elapseCount = 0;
+  }
+
+  void update() {
+    if (elapsing) {
+      elapseCount++;
+      if (elapseCount > elapseCountLimit) {
+        elapseCount = 0;
+        strip.lights[elapseIndex].turnOnFor(5, elapseEdge);
+        int dif = (elapseDirection) ? 1 : (-1);
+        elapseIndex = (elapseIndex + dif) % nOfLED;
+        if (elapseIndex == elapseEndIndex) {
+          elapsing = false;
+        }
+      }
+    }
+  }
+}
+
 class Light {
   // temperary
   float xpos;
   float ypos;
 
-  float alpha = 255;
-  float targetAlpha = 255;
-  float initialAlpha = 255;
+  float alpha = 0;
+  float targetAlpha = 0;
+  float initialAlpha = 0;
   boolean dimming = false;
 
   int dimTime;

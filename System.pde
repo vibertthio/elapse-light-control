@@ -21,12 +21,10 @@ class System {
     canvas.beginDraw();
     canvas.background(0);
 
-    // turnEachOn
     if (turnEachOnActivate) {
       turnEachOn();
     }
 
-    // turnSequence
     if (turnSequenceActivate) {
       turnSequence();
     }
@@ -41,6 +39,13 @@ class System {
 
     if (complexAsyncSequenceActivate) {
       turnComplexAsyncSequence();
+    }
+
+    if (elapsingLeft) {
+      elapseLeftUpdate();
+    }
+    if (elapsingRight) {
+      elapseRightUpdate();
     }
 
     for (int i = 0; i < nOfStrips; i++) {
@@ -201,11 +206,7 @@ class System {
     }
   }
 
-  void elapseTrigger() {
-    for (int i = 0; i < nOfStrips; i++) {
-      strips[i].elapseTrigger();
-    }
-  }
+
 
   boolean turnSequenceActivate = false;
   int sequenceTriggerIndex = 0;
@@ -575,5 +576,58 @@ class System {
     }
   }
 
+  // elapse bang left/right
+  void triggerIndependentControl() {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].triggerIndependentControl();
+    }
+  }
+  void bangElapseOne(int id, int st, int en, boolean dir) {
+    strips[id].bangElapse(st, en, dir);
+  }
+  boolean elapsingLeft = false;
+  boolean elapseLeftStarted = false;
+  void bangElapseLeft() {
+    elapsingLeft = true;
+  }
+  void elapseLeftUpdate() {
+    if (!elapseLeftStarted) {
+      elapseLeftStarted = true;
+      bangElapseOne(4, nOfLED / 2, 0, false);
+      bangElapseOne(5, nOfLED / 2, 0, false);
+      bangElapseOne(6, nOfLED / 2, 0, false);
+      bangElapseOne(7, nOfLED / 2, 0, false);
+    }
+    if ( !strips[4].elapses.get(0).elapsing ) {
+      bangElapseOne(0, nOfLED - 1, 0, false);
+      bangElapseOne(1, nOfLED - 1, 0, false);
+      bangElapseOne(2, nOfLED - 1, 0, false);
+      bangElapseOne(3, nOfLED - 1, 0, false);
+      elapsingLeft = false;
+      elapseLeftStarted = false;
+    }
+  }
+  boolean elapsingRight = false;
+  boolean elapseRightStarted = false;
+  void bangElapseRight() {
+    elapsingRight = true;
+  }
+  void elapseRightUpdate() {
+    if (!elapseRightStarted) {
+      elapseRightStarted = true;
+      bangElapseOne(4, nOfLED / 2, nOfLED - 1, true);
+      bangElapseOne(5, nOfLED / 2, nOfLED - 1, true);
+      bangElapseOne(6, nOfLED / 2, nOfLED - 1, true);
+      bangElapseOne(7, nOfLED / 2, nOfLED - 1, true);
+    }
+    if ( !strips[4].elapses.get(0).elapsing ) {
+      bangElapseOne(8, 0, nOfLED - 1, true);
+      bangElapseOne(9, 0, nOfLED - 1, true);
+      bangElapseOne(10, 0, nOfLED - 1, true);
+      bangElapseOne(11, 0, nOfLED - 1, true);
+      elapsingRight = false;
+      elapseRightStarted = false;
+    }
+  }
 
 }
