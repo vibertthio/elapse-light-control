@@ -26,10 +26,13 @@ class Strip {
   TimeLine turnOnTimer;
 
   // elapse
-  boolean elaspsing = true;
+
+  boolean elaspsing = false;
+  int elapseStartIndex;
+  int elapseEndIndex;
+  boolean elapseDirection = true; // true for right, false for left
   int elapseIndex = 0;
-  int elapseLength = 10;
-  int elapseEdge = 500;
+  int elapseEdge = 250;
 
   // easing
   boolean easing = false;
@@ -62,17 +65,7 @@ class Strip {
 
   void update() {
     if (independentControl) {
-      if (elaspsing) {
-        println("elapseIndex : " + elapseIndex);
-        lights[elapseIndex].turnOn(elapseEdge);
-        int last = ((elapseIndex - elapseLength) + nOfLED) % nOfLED;
-        println("last : " + last);
-        lights[last].turnOff(elapseEdge);
-        elapseIndex = (elapseIndex + 1) % nOfLED;
-      }
-      for (int i = 0; i < nOfLED; i++) {
-        lights[i].update();
-      }
+      lightsUpdate();
     } else {
       if (dimming) {
         float ratio = 0;
@@ -107,6 +100,17 @@ class Strip {
           blink = false;
         }
       }
+    }
+  }
+
+  void lightsUpdate() {
+    if (elaspsing) {
+      lights[elapseIndex].turnOnFor(5, elapseEdge);
+      elapseIndex = (elapseIndex + 1) % nOfLED;
+    }
+
+    for (int i = 0; i < nOfLED; i++) {
+      lights[i].update();
     }
   }
 
@@ -234,6 +238,9 @@ class Strip {
     independentControl = !independentControl;
   }
 
+  void triggerIndependentControl() {
+    independentControl = !independentControl;
+  }
   void elapseTrigger() {
     independentControl = !independentControl;
     for (int i = 0; i < nOfLED; i++) {
@@ -279,13 +286,17 @@ class Light {
   float initialAlpha = 255;
   boolean dimming = false;
 
+  int dimTime;
   TimeLine dimTimer;
 
+  boolean autoOff = false;
+  TimeLine turnOnTimer;
 
   Light(float _x, float _y) {
     xpos = _x;
     ypos = _y;
     dimTimer = new TimeLine(300);
+    turnOnTimer = new TimeLine(50);
   }
 
   void update() {
@@ -295,6 +306,17 @@ class Light {
       if (abs(alpha - targetAlpha) < 1) {
         alpha = targetAlpha;
         dimming = false;
+      }
+    }
+    if (autoOff) {
+      if (!turnOnTimer.state) {
+        if (dimTimer.liner() == 1) {
+          turnOnTimer.startTimer();
+        }
+      } else if (turnOnTimer.liner() == 1) {
+        autoOff = false;
+        turnOff(dimTime);
+        autoOff = false;
       }
     }
   }
@@ -319,6 +341,7 @@ class Light {
 
   void turnOn(int time) {
     dimming = true;
+    dimTime = time;
     dimTimer.limit = time;
     dimTimer.startTimer();
     initialAlpha = alpha;
@@ -334,13 +357,22 @@ class Light {
 
   void turnOff(int time) {
     dimming = true;
+    dimTime = time;
     dimTimer.limit = time;
     dimTimer.startTimer();
     initialAlpha = alpha;
     targetAlpha = 0;
   }
 
+  void turnOnFor(int time, int ll) {
+    autoOff = true;
+    turnOnTimer.limit = time;
+    dimTime = ll;
+    turnOn(ll);
+  }
+
   void setLimit(int ll) {
+    dimTime = ll;
     dimTimer.limit = ll;
   }
 }

@@ -362,12 +362,21 @@ void keyPressed() {
     // system.turnRandOneOff();                  // dim off one (rand)
 
 
-    system.triggerComplexSequence(0);
+    /*******
+    Test for trigger logic
+    *******/
+    // system.triggerComplexSequence(0);
+
+
+    system.elapseTrigger();
 
   }
 
   if (key == 'b') {
-    system.triggerComplexSequence(2);
+    /*******
+    Test for trigger logic
+    *******/
+    // system.triggerComplexSequence(2);
   }
 
 }
