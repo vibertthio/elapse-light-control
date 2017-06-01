@@ -326,8 +326,9 @@ void keyPressed() {
 
     // system.bangAsyncSequence(1);
     // system.bangComplexAsyncSequence(0);
+    // system.turnOnEasingFor(800);
   }
-  
+
   if (key == 'b') {
 
   }

@@ -32,6 +32,11 @@ class Strip {
   int elapseEdge = 500;
 
   // easing
+  boolean easing = false;
+  boolean easingBlink = false;
+  float easeRatio;
+  float dimOnEaseRatio = 8;
+  float dimOffEaseRatio = 0.2;
 
 
   Strip(int _id, float _a, float _x, float _y) {
@@ -73,6 +78,8 @@ class Strip {
         float ratio = 0;
         if (repeatBreathing) {
           ratio = dimTimer.repeatBreathMovement();
+        } else if (easing) {
+          ratio = dimTimer.getPowIn(easeRatio);
         } else {
           ratio = dimTimer.liner();
         }
@@ -82,13 +89,21 @@ class Strip {
 
         if (!dimTimer.state) {
           // alpha = targetAlpha;
+          easing = false;
           dimming = false;
           repeatBreathing = false;
         }
-      } else if (blink) {
-        println("blink check!!");
+      // } else if (blink) {
+      }
+      if (blink) {
+        // println("blink check!!");
         if (turnOnTimer.liner() == 1) {
-          turnOff(dimTime);
+          if (easingBlink) {
+            turnOffEasing(dimTime / 2);
+            easingBlink = false;
+          } else {
+            turnOff(dimTime);
+          }
           blink = false;
         }
       }
@@ -135,6 +150,17 @@ class Strip {
     targetAlpha = 255;
   }
 
+  void turnOnEasing(int time) {
+    turnOn(time);
+    easeRatio = dimOnEaseRatio;
+    easing = true;
+  }
+
+  void turnOnEasing(int time, int ratio) {
+    dimOnEaseRatio = ratio;
+    turnOnEasing(time);
+  }
+
   void turnOff() {
     repeatBreathing = false;
     independentControl = false;
@@ -154,6 +180,17 @@ class Strip {
     targetAlpha = 0;
   }
 
+  void turnOffEasing(int time) {
+    turnOff(time);
+    easeRatio = dimOffEaseRatio;
+    easing = true;
+  }
+
+  void turnOffEasing(int time, int ratio) {
+    dimOffEaseRatio = ratio;
+    turnOffEasing(time);
+  }
+
   void turnOnFor(int time) {
     repeatBreathing = false;
     blink = true;
@@ -168,6 +205,19 @@ class Strip {
     blink = true;
     dimTime = ll;
     turnOn(dimTime);
+    turnOnTimer.limit = time;
+    turnOnTimer.startTimer();
+  }
+
+  // only one param here,
+  // because the length of dimming and opening
+  // must match at usual cases
+  void turnOnEasingFor(int time) {
+    repeatBreathing = false;
+    blink = true;
+    easingBlink = true;
+    dimTime = time;
+    turnOnEasing(time);
     turnOnTimer.limit = time;
     turnOnTimer.startTimer();
   }

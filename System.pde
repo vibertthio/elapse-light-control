@@ -64,9 +64,21 @@ class System {
     }
   }
 
+  void turnOnEasing(int time) {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].turnOnEasing(time);
+    }
+  }
+
   void turnOnFor(int time, int ll) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOnFor(time, ll);
+    }
+  }
+
+  void turnOnEasingFor(int time) {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].turnOnEasingFor(time);
     }
   }
 
@@ -145,6 +157,12 @@ class System {
   void turnOff(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOff(time);
+    }
+  }
+
+  void turnOffEasing(int time) {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].turnOffEasing(time);
     }
   }
 
@@ -474,8 +492,6 @@ class System {
       }
     }
   }
-
-
 
 
 }
