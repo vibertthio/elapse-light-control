@@ -294,8 +294,7 @@ void noteOn(int channel, int pitch, int velocity) {
   }
 }
 //Processing to Arduino (for tube control)
-void keyPressed()
-{
+void keyPressed() {
   if (key == 'a') {
     // system.dimRepeat(1, 20);
     // system.dimRepeat(3, 50);
@@ -321,6 +320,15 @@ void keyPressed()
 
     // system.bangComplexSequence(2);
 
+    // system.turnRandOneOn();
+    // system.turnRandOneOff();
+
+
+    // system.bangAsyncSequence(1);
+    // system.bangComplexAsyncSequence(0);
+  }
+  
+  if (key == 'b') {
 
   }
 

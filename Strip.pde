@@ -31,6 +31,9 @@ class Strip {
   int elapseLength = 10;
   int elapseEdge = 500;
 
+  // easing
+
+
   Strip(int _id, float _a, float _x, float _y) {
     id = _id;
     angle = _a;
