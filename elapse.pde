@@ -368,7 +368,7 @@ void keyPressed() {
     // system.triggerComplexSequence(0);
 
 
-    system.elapseTrigger();
+    // system.elapseTrigger();
 
   }
 
