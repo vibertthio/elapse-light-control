@@ -296,41 +296,78 @@ void noteOn(int channel, int pitch, int velocity) {
 //Processing to Arduino (for tube control)
 void keyPressed() {
   if (key == 'a') {
-    // system.dimRepeat(1, 20);
-    // system.dimRepeat(3, 50);
-    // system.turnFourRandSequence(50);
+    /*******
+    First Row
+    *******/
 
-    // system.turnRandOneOnFor(20, 20);
-    // system.turnRandMultipleOnFor(20, 20);
-    // system.bangSequence(0, 100);
-    // system.bangFourRandSequence(20);
+    // system.dimRepeat(1, 20);              // blink
+    // system.turnOnEasingFor(800);          // 前緩後急閃
+    // system.dimRepeat(3, 50);              // 連閃 3 次
+    // system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
+    // system.turnRandOneOnFor(20, 20);      // randon strobe (one)
+    // system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
+    // system.turnOn(100);                   // dim on
+    // system.turnOff(100);                  // dim off
+
+    /*******
+    Second Row
+    *******/
+    // system.bangComplexSequence(0);         // 閃 ->
+    // system.bangComplexSequence(1);         // 閃 <-
+    // system.bangSequence(0);                // 0, 7, 8
+    // system.bangSequence(1);                // 3, 4, 11
+    // system.bangSequence(2);                // 0, 3, 4, 7, 8, 11
+    // system.bangComplexSequence(2);         // 四列輪閃
+    // system.bangSequence(4);                // 0, 11, 4, 8
+    // system.bangSequence(5);                // 9, 2, 1, 10
+
+    /*******
+    Third Row
+    *******/
+    // system.dimRepeatCol(1, 20, 0);         // 閃
+    // turnOnEasingForCol(800, 0);            // 前緩後急閃
+    // system.bangSequence(10);               // (▼)往下閃
+    // system.bangSequence(11);               // (▲)往上閃
+    // system.bangSequence(12);               // 0, 3, 2, 1
+    // system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+    // system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+    // system.bangSequence(13);               // 0, 2, 1, 3
 
 
-    // 0, 7, 8
-    // system.bangSequence(0, 100);
+    /*******
+    Auto Effect
+    *******/
+    // first column
+    // system.triggerComplexSequence(2);         // 往下輪閃
+    // system.triggerComplexSequence(3);         // 網上輪閃
+    // system.triggerSequence(6);                // 左到右, 上到下 輪閃
+    //
+    // second column
+    // system.triggerComplexAsyncSequence(0);    // 往下全開/關
+    // system.triggerComplexAsyncSequence(1);    // 往上全開/關
+    // system.triggerSequence(7);                // 右到左, 上到下 輪閃
+    //
+    // third column
+    // system.triggerSequence(28);
+    // system.triggerSequence(29);
+    //
+    // fourth column
+    // system.triggerAsyncSequence(6);
+    // system.triggerAsyncSequence(7);
 
-    // 3, 4, 11
-    // system.bangSequence(1, 100);
-
-    // 0, 3, 4, 7, 8, 11
-    // system.bangSequence(2, 100);
-
-    // system.bangComplexSequence(0);
-    // system.bangComplexSequence(1);
-
-    // system.bangComplexSequence(2);
-
-    // system.turnRandOneOn();
-    // system.turnRandOneOff();
+    /*******
+    The Rightest Column
+    *******/
+    // system.turnRandOneOn();                   // dim on one (rand)
+    // system.turnRandOneOff();                  // dim off one (rand)
 
 
-    // system.bangAsyncSequence(1);
-    // system.bangComplexAsyncSequence(0);
-    // system.turnOnEasingFor(800);
+    system.triggerComplexSequence(0);
+
   }
 
   if (key == 'b') {
-
+    system.triggerComplexSequence(2);
   }
 
 }

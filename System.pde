@@ -1,6 +1,7 @@
 class System {
   Strip[] strips;
   int nOfStrips = 12;
+  int nOfCol = 3;
 
   System() {
     strips = new Strip[nOfStrips];
@@ -78,6 +79,13 @@ class System {
 
   void turnOnEasingFor(int time) {
     for (int i = 0; i < nOfStrips; i++) {
+      strips[i].turnOnEasingFor(time);
+    }
+  }
+
+  void turnOnEasingForCol(int time, int col) {
+    int nInCol = nOfStrips / nOfCol;
+    for (int i = col * nInCol, n = (col + 1) * nInCol; i < n; i += 1) {
       strips[i].turnOnEasingFor(time);
     }
   }
@@ -180,6 +188,13 @@ class System {
     }
   }
 
+  void dimRepeatCol(int time, int ll, int col) {
+    int nInCol = nOfStrips / nOfCol;
+    for (int i = col * nInCol, n = (col + 1) * nInCol; i < n; i += 1) {
+      strips[i].dimRepeat(time, ll);
+    }
+  }
+
   void blink() {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].blink();
@@ -193,11 +208,12 @@ class System {
   }
 
   boolean turnSequenceActivate = false;
+  int sequenceTriggerIndex = 0;
   boolean bangSequence = false;
   int turnSequenceTime = 100;
   int turnSequenceIndex = 0;
   int turnSequenceCount = 0;
-  int turnSequenceCountLimit = 2;
+  int turnSequenceCountLimit = 5;
   int[][] sequenceSet = {
     { 0, 7, 8 }, // 0
     { 3, 4, 11 },
@@ -209,30 +225,53 @@ class System {
     { 8, 4, 0, 9, 5, 1, 10, 6, 2, 11, 7, 3 },
     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
     { 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3 },
-    { 0, 0, 0, 0}, // 10
+    { 0, 1, 2, 3}, // 10
+    { 3, 2, 1, 0},
+    { 0, 3, 2, 1},
+    { 0, 2, 1, 3},
     { 0, 0, 0, 0},
-    { 0, 0, 0, 0}, // 12
+    { 0, 0, 0, 0}, // 15
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0}, // 20
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0}, // 25
+    { 0, 0, 0, 0},
+    { 0, 0, 0, 0},
+    { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11,
+      10, 9, 8, 4, 5, 6, 7, 3, 2, 1, 0 },
+    { 3, 2, 1, 0, 4, 5, 6, 7, 11, 10, 9, 8,
+      9, 10, 11, 7, 6, 5, 4, 0, 1, 2, 3 },
+    { 0, 0, 0, 0}, // 30 // this one if for random sequence, don't modify it
   };
   int[] sequence;
 
   void triggerSequence() {
-    turnSequenceActivate = !turnSequenceActivate;
-    turnSequenceCount = 0;
+    triggerSequence(sequenceTriggerIndex);
+    // turnSequenceActivate = !turnSequenceActivate;
+    // turnSequenceCount = 0;
   }
   void triggerSequence(int index) {
     turnOff();
-    turnSequenceActivate = !turnSequenceActivate;
+    if (index == sequenceTriggerIndex) {
+      turnSequenceActivate = !turnSequenceActivate;
+    } else {
+      turnSequenceActivate = true;
+    }
+
+    sequenceTriggerIndex = index;
     sequence = sequenceSet[index%sequenceSet.length];
     turnSequenceIndex = 0;
     turnSequenceCount = 0;
   }
   void triggerSequence(int index, int time) {
-    turnOff();
-    turnSequenceActivate = !turnSequenceActivate;
+    triggerSequence(index);
     turnSequenceTime = time;
-    sequence = sequenceSet[index%sequenceSet.length];
-    turnSequenceIndex = 0;
-    turnSequenceCount = 0;
   }
   void bangSequence(int index, int time) {
     triggerSequence(index, time);
@@ -257,6 +296,7 @@ class System {
 
   // complex sequence
   boolean complexSequenceActivate = false;
+  int complexSequenceTriggerIndex = 0;
   boolean bangComplexSequence = false;
   int complexSequenceTime = 20;
   int complexSequenceDur = 50;
@@ -280,14 +320,27 @@ class System {
       {2, 6, 10},
       {3, 7, 11},
     },
+    {
+      {3, 7, 11},
+      {2, 6, 10},
+      {1, 5, 9},
+      {0, 4, 8},
+    },
   };
   int[][] complexSequence;
   void triggerComplexSequence() {
-    complexSequenceActivate = !complexSequenceActivate;
-    complexSequenceCount = 0;
+    triggerComplexSequence(complexSequenceTriggerIndex);
+    // complexSequenceActivate = !complexSequenceActivate;
+    // complexSequenceCount = 0;
   }
   void triggerComplexSequence(int index) {
-    complexSequenceActivate = !complexSequenceActivate;
+    if (index == complexSequenceTriggerIndex) {
+      complexSequenceActivate = !complexSequenceActivate;
+    } else {
+      complexSequenceActivate = true;
+    }
+
+    complexSequenceTriggerIndex = index;
     complexSequence = complexSequenceSet[index%complexSequenceSet.length];
     complexSequenceIndex = 0;
     complexSequenceCount = 0;
@@ -314,7 +367,7 @@ class System {
 
 
   // position 4
-  final int RANDSEQUENCE = 8;
+  final int RANDSEQUENCE = 30;
   void turnFourRandSequence(int time) {
     final int NUM = 4;
     final IntList nums = new IntList(NUM);
@@ -344,8 +397,6 @@ class System {
     bangSequence(RANDSEQUENCE, time);
   }
 
-
-
   // rand on off
   int randomDimOnOffTime = 100;
   void turnRandOneOn() {
@@ -365,6 +416,7 @@ class System {
 
   // asynce sequence
   boolean asyncSequenceActivate = false;
+  int asyncSequenceTriggerIndex = 0;
   boolean bangAsyncSequence = false;
   int asyncSequenceTime = 50;
   int asyncSequenceIndex = 0;
@@ -378,6 +430,11 @@ class System {
     { 3, 2, 1, 0, 0, 1, 2, 3 },
     { 7, 6, 5, 4, 4, 5, 6, 7 },
     { 11, 10, 9, 8, 8, 9, 10, 11 },
+
+    { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11,
+      11, 10, 9, 8, 4, 5, 6, 7, 3, 2, 1, 0 },
+    { 3, 2, 1, 0, 4, 5, 6, 7, 11, 10, 9, 8,
+      8, 9, 10, 11, 7, 6, 5, 4, 0, 1, 2, 3 },
   };
   boolean[] asyncRecord = {
     false, false, false, false,
@@ -387,15 +444,22 @@ class System {
   int[] asyncSequence;
 
   void triggerAsyncSequence() {
-    asyncSequenceActivate = !asyncSequenceActivate;
-    asyncSequenceCount = 0;
+    triggerAsyncSequence(asyncSequenceTriggerIndex);
+    // asyncSequenceActivate = !asyncSequenceActivate;
+    // asyncSequenceCount = 0;
   }
   void triggerAsyncSequence(int index) {
     for (int i = 0, n = nOfStrips; i < n; i++) {
       asyncRecord[i] = false;
     }
     turnOff();
-    asyncSequenceActivate = !asyncSequenceActivate;
+    if (index == asyncSequenceTriggerIndex) {
+      asyncSequenceActivate = !asyncSequenceActivate;
+    } else {
+      asyncSequenceActivate = true;
+    }
+
+    asyncSequenceTriggerIndex = index;
     asyncSequence = asyncSequenceSet[index%asyncSequenceSet.length];
     asyncSequenceIndex = 0;
     asyncSequenceCount = 0;
@@ -427,6 +491,7 @@ class System {
 
   // complex async sequence
   boolean complexAsyncSequenceActivate = false;
+  int complexAsyncSequenceTriggerIndex = 0;
   boolean bangComplexAsyncSequence = false;
   int complexAsyncSequenceTime = 50;
   int complexAsyncSequenceIndex = 0;
@@ -443,6 +508,16 @@ class System {
       { 1, 5, 9 },
       { 0, 4, 8 },
     },
+    {
+      { 3, 7, 11 },
+      { 2, 6, 10 },
+      { 1, 5, 9 },
+      { 0, 4, 8 },
+      { 0, 4, 8 },
+      { 1, 5, 9 },
+      { 2, 6, 10 },
+      { 3, 7, 11 },
+    },
   };
   boolean[] complexAsyncRecord = {
     false, false, false, false,
@@ -452,15 +527,22 @@ class System {
   int[][] complexAsyncSequence;
 
   void triggerComplexAsyncSequence() {
-    complexAsyncSequenceActivate = !complexAsyncSequenceActivate;
-    complexAsyncSequenceCount = 0;
+    triggerComplexAsyncSequence(complexAsyncSequenceTriggerIndex);
+    // complexAsyncSequenceActivate = !complexAsyncSequenceActivate;
+    // complexAsyncSequenceCount = 0;
   }
   void triggerComplexAsyncSequence(int index) {
     for (int i = 0, n = nOfStrips; i < n; i++) {
       complexAsyncRecord[i] = false;
     }
     turnOff();
-    complexAsyncSequenceActivate = !complexAsyncSequenceActivate;
+    if (index == complexAsyncSequenceTriggerIndex) {
+      complexAsyncSequenceActivate = !complexAsyncSequenceActivate;
+    } else {
+      complexAsyncSequenceActivate = true;
+    }
+
+    complexAsyncSequenceTriggerIndex = index;
     complexAsyncSequence = complexAsyncSequenceSet[index%complexAsyncSequenceSet.length];
     complexAsyncSequenceIndex = 0;
     complexAsyncSequenceCount = 0;
