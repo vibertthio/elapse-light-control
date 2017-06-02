@@ -380,8 +380,9 @@ void keyPressed() {
 
 
     // system.bangElapseLeft();
-    system.bangElapseRight();
+    // system.bangElapseRight();
     // system.elapseStateControls[1].bang();
+    system.bangComplexAsyncElapse(1);
   }
 
 }

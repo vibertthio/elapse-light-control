@@ -18,34 +18,16 @@ class System {
     initElapseStateControls();
   }
 
-
-
-
   public void render() {
     canvas.beginDraw();
     canvas.background(0);
 
-    if (turnEachOnActivate) {
-      turnEachOn();
-    }
-
-    if (turnSequenceActivate) {
-      turnSequence();
-    }
-
-    if (complexSequenceActivate) {
-      turnComplexSequence();
-    }
-
-    if (asyncSequenceActivate) {
-      turnAsyncSequence();
-    }
-
-    if (complexAsyncSequenceActivate) {
-      turnComplexAsyncSequence();
-    }
-
+    updateSequence();
+    updateComplexSequence();
+    updateAsyncSequence();
+    updateComplexAsyncSequence();
     updateElapseStateControls();
+    updateComplexAsyncElapse();
 
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].update();
@@ -138,28 +120,6 @@ class System {
     }
   }
 
-  boolean turnEachOnActivate = false;
-  int turnEachOnTime = 0;
-  int turnEachOnIndex = 0;
-  int turnEachOnCount = 0;
-  int turnEachOnCountLimit = 5;
-
-  void triggerTurnEachOn(int time) {
-    turnEachOnActivate = !turnEachOnActivate;
-    turnEachOnTime = time;
-  }
-
-  void turnEachOn() {
-    turnEachOnCount++;
-    if (turnEachOnCount > turnEachOnCountLimit) {
-      int prev = (turnEachOnIndex > 0)? (turnEachOnIndex - 1) : (nOfStrips - 1);
-      turnOneOn(turnEachOnIndex, turnEachOnTime);
-      turnOneOff(prev, turnEachOnTime);
-      turnEachOnIndex = (turnEachOnIndex + 1) % nOfStrips;
-      turnEachOnCount = 0;
-    }
-  }
-
   void turnOff() {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOff();
@@ -204,8 +164,6 @@ class System {
       strips[i].blink();
     }
   }
-
-
 
   boolean turnSequenceActivate = false;
   int sequenceTriggerIndex = 0;
@@ -277,19 +235,21 @@ class System {
     triggerSequence(index, time);
     bangSequence = true;
   }
-  void turnSequence() {
-    turnSequenceCount++;
-    if (turnSequenceCount > turnSequenceCountLimit) {
-      // int prev = (turnSequenceIndex > 0)? (turnSequenceIndex - 1) : (sequence.length - 1);
-      // turnOneOn(sequence[turnSequenceIndex], turnSequenceTime);
-      // turnOneOff(sequence[prev], turnSequenceTime);
-      turnOneOnFor(sequence[turnSequenceIndex], turnSequenceTime, 20);
-      turnSequenceIndex = (turnSequenceIndex + 1) % sequence.length;
-      turnSequenceCount = 0;
+  void updateSequence() {
+    if (turnSequenceActivate) {
+      turnSequenceCount++;
+      if (turnSequenceCount > turnSequenceCountLimit) {
+        // int prev = (turnSequenceIndex > 0)? (turnSequenceIndex - 1) : (sequence.length - 1);
+        // turnOneOn(sequence[turnSequenceIndex], turnSequenceTime);
+        // turnOneOff(sequence[prev], turnSequenceTime);
+        turnOneOnFor(sequence[turnSequenceIndex], turnSequenceTime, 20);
+        turnSequenceIndex = (turnSequenceIndex + 1) % sequence.length;
+        turnSequenceCount = 0;
 
-      if (bangSequence && turnSequenceIndex == 0) {
-        triggerSequence();
-        bangSequence = false;
+        if (bangSequence && turnSequenceIndex == 0) {
+          triggerSequence();
+          bangSequence = false;
+        }
       }
     }
   }
@@ -349,70 +309,25 @@ class System {
     triggerComplexSequence(index);
     bangComplexSequence = true;
   }
-  void turnComplexSequence() {
-    complexSequenceCount++;
-    if (complexSequenceCount > complexSequenceCountLimit) {
-      for (int i = 0, n = complexSequence[complexSequenceIndex].length; i < n; i++) {
-        turnOneOnFor(complexSequence[complexSequenceIndex][i], complexSequenceDur, complexSequenceTime);
+  void updateComplexSequence() {
+    if (complexSequenceActivate) {
+      complexSequenceCount++;
+      if (complexSequenceCount > complexSequenceCountLimit) {
+        for (int i = 0, n = complexSequence[complexSequenceIndex].length; i < n; i++) {
+          turnOneOnFor(complexSequence[complexSequenceIndex][i], complexSequenceDur, complexSequenceTime);
+        }
+        complexSequenceIndex = (complexSequenceIndex + 1) % complexSequence.length;
+        complexSequenceCount = 0;
+
+        if (bangComplexSequence && complexSequenceIndex == 0) {
+          triggerComplexSequence();
+          bangComplexSequence = false;
+        }
       }
-      complexSequenceIndex = (complexSequenceIndex + 1) % complexSequence.length;
-      complexSequenceCount = 0;
-
-      if (bangComplexSequence && complexSequenceIndex == 0) {
-        triggerComplexSequence();
-        bangComplexSequence = false;
-      }
     }
   }
 
 
-  // position 4
-  final int RANDSEQUENCE = 30;
-  void turnFourRandSequence(int time) {
-    final int NUM = 4;
-    final IntList nums = new IntList(NUM);
-
-    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
-    do {
-      rnd = (int) random(nOfStrips);
-    } while (nums.hasValue(rnd));
-
-    for (int i = 0; i < NUM; i++) {
-      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
-    }
-    triggerSequence(RANDSEQUENCE, time);
-  }
-  void bangFourRandSequence(int time) {
-    final int NUM = 4;
-    final IntList nums = new IntList(NUM);
-
-    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
-    do {
-      rnd = (int) random(nOfStrips);
-    } while (nums.hasValue(rnd));
-
-    for (int i = 0; i < NUM; i++) {
-      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
-    }
-    bangSequence(RANDSEQUENCE, time);
-  }
-
-  // rand on off
-  int randomDimOnOffTime = 100;
-  void turnRandOneOn() {
-    int rnd;
-    do {
-      rnd = (int) random(nOfStrips);
-    }  while (strips[rnd].alpha > 0);
-    turnOneOn(rnd, randomDimOnOffTime);
-  }
-  void turnRandOneOff() {
-    int rnd;
-    do {
-      rnd = (int) random(nOfStrips);
-    }  while (strips[rnd].alpha < 100);
-    turnOneOff(rnd, randomDimOnOffTime);
-  }
 
   // asynce sequence
   boolean asyncSequenceActivate = false;
@@ -468,23 +383,25 @@ class System {
     triggerAsyncSequence(index);
     bangAsyncSequence = true;
   }
-  void turnAsyncSequence() {
-    asyncSequenceCount++;
-    if (asyncSequenceCount > asyncSequenceCountLimit) {
-      println(asyncSequenceIndex);
+  void updateAsyncSequence() {
+    if (asyncSequenceActivate) {
+      asyncSequenceCount++;
+      if (asyncSequenceCount > asyncSequenceCountLimit) {
+        println(asyncSequenceIndex);
 
-      if (asyncRecord[asyncSequence[asyncSequenceIndex]]) {
-        turnOneOff(asyncSequence[asyncSequenceIndex], asyncSequenceTime);
-      } else {
-        turnOneOn(asyncSequence[asyncSequenceIndex], asyncSequenceTime);
-      }
-      asyncRecord[asyncSequence[asyncSequenceIndex]] = !asyncRecord[asyncSequence[asyncSequenceIndex]];
-      asyncSequenceIndex = (asyncSequenceIndex + 1) % asyncSequence.length;
-      asyncSequenceCount = 0;
+        if (asyncRecord[asyncSequence[asyncSequenceIndex]]) {
+          turnOneOff(asyncSequence[asyncSequenceIndex], asyncSequenceTime);
+        } else {
+          turnOneOn(asyncSequence[asyncSequenceIndex], asyncSequenceTime);
+        }
+        asyncRecord[asyncSequence[asyncSequenceIndex]] = !asyncRecord[asyncSequence[asyncSequenceIndex]];
+        asyncSequenceIndex = (asyncSequenceIndex + 1) % asyncSequence.length;
+        asyncSequenceCount = 0;
 
-      if (bangAsyncSequence && asyncSequenceIndex == 0) {
-        triggerAsyncSequence();
-        bangAsyncSequence = false;
+        if (bangAsyncSequence && asyncSequenceIndex == 0) {
+          triggerAsyncSequence();
+          bangAsyncSequence = false;
+        }
       }
     }
   }
@@ -551,28 +468,78 @@ class System {
     triggerComplexAsyncSequence(index);
     bangComplexAsyncSequence = true;
   }
-  void turnComplexAsyncSequence() {
-    complexAsyncSequenceCount++;
-    if (complexAsyncSequenceCount > complexAsyncSequenceCountLimit) {
-      println(complexAsyncSequenceIndex);
+  void updateComplexAsyncSequence() {
+    if (complexAsyncSequenceActivate) {
+      complexAsyncSequenceCount++;
+      if (complexAsyncSequenceCount > complexAsyncSequenceCountLimit) {
 
-      int[] cas = complexAsyncSequence[complexAsyncSequenceIndex];
-      for (int i = 0, n = cas.length; i < n; i++) {
-        if (complexAsyncRecord[cas[i]]) {
-          turnOneOff(cas[i], complexAsyncSequenceTime);
-        } else {
-          turnOneOn(cas[i], complexAsyncSequenceTime);
+        int[] cas = complexAsyncSequence[complexAsyncSequenceIndex];
+        for (int i = 0, n = cas.length; i < n; i++) {
+          if (complexAsyncRecord[cas[i]]) {
+            turnOneOff(cas[i], complexAsyncSequenceTime);
+          } else {
+            turnOneOn(cas[i], complexAsyncSequenceTime);
+          }
+          complexAsyncRecord[cas[i]] = !complexAsyncRecord[cas[i]];
         }
-        complexAsyncRecord[cas[i]] = !complexAsyncRecord[cas[i]];
-      }
-      complexAsyncSequenceIndex = (complexAsyncSequenceIndex + 1) % complexAsyncSequence.length;
-      complexAsyncSequenceCount = 0;
+        complexAsyncSequenceIndex = (complexAsyncSequenceIndex + 1) % complexAsyncSequence.length;
+        complexAsyncSequenceCount = 0;
 
-      if (bangComplexAsyncSequence && complexAsyncSequenceIndex == 0) {
-        triggerComplexAsyncSequence();
-        bangComplexAsyncSequence = false;
+        if (bangComplexAsyncSequence && complexAsyncSequenceIndex == 0) {
+          triggerComplexAsyncSequence();
+          bangComplexAsyncSequence = false;
+        }
       }
     }
+  }
+
+
+  // rand sequence, length = 4
+  final int RANDSEQUENCE = 30;
+  void turnFourRandSequence(int time) {
+    final int NUM = 4;
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
+    }
+    triggerSequence(RANDSEQUENCE, time);
+  }
+  void bangFourRandSequence(int time) {
+    final int NUM = 4;
+    final IntList nums = new IntList(NUM);
+
+    for (int rnd, i = 0; i <= NUM; nums.append(rnd), ++i)
+    do {
+      rnd = (int) random(nOfStrips);
+    } while (nums.hasValue(rnd));
+
+    for (int i = 0; i < NUM; i++) {
+      sequenceSet[RANDSEQUENCE][i] = nums.get(i);
+    }
+    bangSequence(RANDSEQUENCE, time);
+  }
+
+  // rand on off
+  int randomDimOnOffTime = 100;
+  void turnRandOneOn() {
+    int rnd;
+    do {
+      rnd = (int) random(nOfStrips);
+    }  while (strips[rnd].alpha > 0);
+    turnOneOn(rnd, randomDimOnOffTime);
+  }
+  void turnRandOneOff() {
+    int rnd;
+    do {
+      rnd = (int) random(nOfStrips);
+    }  while (strips[rnd].alpha < 100);
+    turnOneOff(rnd, randomDimOnOffTime);
   }
 
   // elapse bang left/right
@@ -596,6 +563,66 @@ class System {
     elapseStateControls[5].bang();
     elapseStateControls[7].bang();  }
 
+  boolean complexAsyncElapseActivate = false;
+  int complexAsyncElapseTriggerIndex = 0;
+  boolean bangComplexAsyncElapse = false;
+  int complexAsyncElapseIndex = 0;
+  int complexAsyncElapseCount = 0;
+  int complexAsyncElapseCountLimit = 5;
+  int [][][] complexAsyncElapseSet = {
+    {
+      { 0, 1},
+      { 2, 3},
+      { 4, 5},
+      { 6, 7},
+    },
+    {
+      { 6, 7},
+      { 4, 5},
+      { 2, 3},
+      { 0, 1},
+    },
+  };
+  int [][] complexAsyncElapse;
+  void triggerComplexAsyncElapse() {
+    triggerComplexAsyncElapse(complexAsyncElapseTriggerIndex);
+  }
+  void triggerComplexAsyncElapse(int index) {
+    if (index == complexAsyncElapseTriggerIndex) {
+      complexAsyncElapseActivate = !complexAsyncElapseActivate;
+    } else {
+      complexAsyncElapseActivate = true;
+    }
+
+    complexAsyncElapseTriggerIndex = index;
+    complexAsyncElapse = complexAsyncElapseSet[index%complexAsyncElapseSet.length];
+    complexAsyncElapseIndex = 0;
+    complexAsyncElapseCount = 0;
+  }
+  void bangComplexAsyncElapse(int index) {
+    triggerComplexAsyncElapse(index);
+    bangComplexAsyncElapse = true;
+  }
+  void updateComplexAsyncElapse() {
+    if (complexAsyncElapseActivate) {
+      complexAsyncElapseCount++;
+      if (complexAsyncElapseCount > complexAsyncElapseCountLimit) {
+
+        int[] cas = complexAsyncElapse[complexAsyncElapseIndex];
+        for (int i = 0, n = cas.length; i < n; i++) {
+          bangElapse(cas[i]);
+        }
+        complexAsyncElapseIndex = (complexAsyncElapseIndex + 1) % complexAsyncElapse.length;
+        complexAsyncElapseCount = 0;
+
+        if (bangComplexAsyncElapse && complexAsyncElapseIndex == 0) {
+          triggerComplexAsyncElapse();
+          bangComplexAsyncElapse = false;
+        }
+      }
+    }
+  }
+
   ElapseStateControl[] elapseStateControls;
   void initElapseStateControls() {
     elapseStateControls = new ElapseStateControl[8];
@@ -608,6 +635,9 @@ class System {
     for (int i = 0, n = elapseStateControls.length; i < n; i++) {
       elapseStateControls[i].update();
     }
+  }
+  void bangElapse(int id) {
+    elapseStateControls[id].bang();
   }
 }
 
