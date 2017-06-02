@@ -44,54 +44,44 @@ class System {
       strips[i].turnOn();
     }
   }
-
   void turnOn(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOn(time);
     }
   }
-
   void turnOnEasing(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOnEasing(time);
     }
   }
-
   void turnOnFor(int time, int ll) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOnFor(time, ll);
     }
   }
-
   void turnOnEasingFor(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOnEasingFor(time);
     }
   }
-
   void turnOnEasingForCol(int time, int col) {
     int nInCol = nOfStrips / nOfCol;
     for (int i = col * nInCol, n = (col + 1) * nInCol; i < n; i += 1) {
       strips[i].turnOnEasingFor(time);
     }
   }
-
   void turnOneOn(int id) {
     strips[id].turnOn();
   }
-
   void turnOneOn(int id, int time) {
     strips[id].turnOn(time);
   }
-
   void turnOneOnFor(int id, int time, int ll) {
     strips[id].turnOnFor(time, ll);
   }
-
   void turnRandOneOnFor(int time, int ll) {
     turnOneOnFor(int(random(nOfStrips)),time, ll);
   }
-
   void turnRandMultipleOnFor(int time, int ll) {
     final int NUM = int(random(nOfStrips));
     final IntList nums = new IntList(NUM);
@@ -105,7 +95,6 @@ class System {
       turnOneOnFor(nums.get(i), time, ll);
     }
   }
-
   void turnMultipleOnFor(int time, int ll, int number) {
     final int NUM = number;
     final IntList nums = new IntList(NUM);
@@ -119,46 +108,38 @@ class System {
       turnOneOnFor(nums.get(i), time, ll);
     }
   }
-
   void turnOff() {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOff();
     }
   }
-
   void turnOff(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOff(time);
     }
   }
-
   void turnOffEasing(int time) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].turnOffEasing(time);
     }
   }
-
   void turnOneOff(int id) {
     strips[id].turnOff();
   }
-
   void turnOneOff(int id, int time) {
     strips[id].turnOff(time);
   }
-
   void dimRepeat(int time, int ll) {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].dimRepeat(time, ll);
     }
   }
-
   void dimRepeatCol(int time, int ll, int col) {
     int nInCol = nOfStrips / nOfCol;
     for (int i = col * nInCol, n = (col + 1) * nInCol; i < n; i += 1) {
       strips[i].dimRepeat(time, ll);
     }
   }
-
   void blink() {
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].blink();
@@ -653,11 +634,9 @@ class ElapseStateControl {
     rowIndex = _r % (_s.nOfStrips / _s.nOfCol);
     dir = _d;
   }
-
   void bang() {
     elapsing = true;
   }
-
   void update() {
     if (elapsing) {
       if (!started) {
