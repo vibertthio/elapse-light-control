@@ -14,7 +14,11 @@ class System {
         strips[i] = new Strip(i, 0, 1000, 300 + 50 * (i - 8));
       }
     }
+
+    initElapseStateControls();
   }
+
+
 
 
   public void render() {
@@ -41,12 +45,7 @@ class System {
       turnComplexAsyncSequence();
     }
 
-    if (elapsingLeft) {
-      elapseLeftUpdate();
-    }
-    if (elapsingRight) {
-      elapseRightUpdate();
-    }
+    updateElapseStateControls();
 
     for (int i = 0; i < nOfStrips; i++) {
       strips[i].update();
@@ -585,49 +584,65 @@ class System {
   void bangElapseOne(int id, int st, int en, boolean dir) {
     strips[id].bangElapse(st, en, dir);
   }
-  boolean elapsingLeft = false;
-  boolean elapseLeftStarted = false;
   void bangElapseLeft() {
-    elapsingLeft = true;
+    elapseStateControls[0].bang();
+    elapseStateControls[2].bang();
+    elapseStateControls[4].bang();
+    elapseStateControls[6].bang();
   }
-  void elapseLeftUpdate() {
-    if (!elapseLeftStarted) {
-      elapseLeftStarted = true;
-      bangElapseOne(4, nOfLED / 2, 0, false);
-      bangElapseOne(5, nOfLED / 2, 0, false);
-      bangElapseOne(6, nOfLED / 2, 0, false);
-      bangElapseOne(7, nOfLED / 2, 0, false);
-    }
-    if ( !strips[4].elapses.get(0).elapsing ) {
-      bangElapseOne(0, nOfLED - 1, 0, false);
-      bangElapseOne(1, nOfLED - 1, 0, false);
-      bangElapseOne(2, nOfLED - 1, 0, false);
-      bangElapseOne(3, nOfLED - 1, 0, false);
-      elapsingLeft = false;
-      elapseLeftStarted = false;
-    }
-  }
-  boolean elapsingRight = false;
-  boolean elapseRightStarted = false;
   void bangElapseRight() {
-    elapsingRight = true;
+    elapseStateControls[1].bang();
+    elapseStateControls[3].bang();
+    elapseStateControls[5].bang();
+    elapseStateControls[7].bang();  }
+
+  ElapseStateControl[] elapseStateControls;
+  void initElapseStateControls() {
+    elapseStateControls = new ElapseStateControl[8];
+    for (int i = 0, n = nOfStrips / nOfCol; i < n; i++) {
+      elapseStateControls[2 * i] = new ElapseStateControl(this, i, false);
+      elapseStateControls[2 * i + 1] = new ElapseStateControl(this, i, true);
+    }
   }
-  void elapseRightUpdate() {
-    if (!elapseRightStarted) {
-      elapseRightStarted = true;
-      bangElapseOne(4, nOfLED / 2, nOfLED - 1, true);
-      bangElapseOne(5, nOfLED / 2, nOfLED - 1, true);
-      bangElapseOne(6, nOfLED / 2, nOfLED - 1, true);
-      bangElapseOne(7, nOfLED / 2, nOfLED - 1, true);
+  void updateElapseStateControls() {
+    for (int i = 0, n = elapseStateControls.length; i < n; i++) {
+      elapseStateControls[i].update();
     }
-    if ( !strips[4].elapses.get(0).elapsing ) {
-      bangElapseOne(8, 0, nOfLED - 1, true);
-      bangElapseOne(9, 0, nOfLED - 1, true);
-      bangElapseOne(10, 0, nOfLED - 1, true);
-      bangElapseOne(11, 0, nOfLED - 1, true);
-      elapsingRight = false;
-      elapseRightStarted = false;
-    }
+  }
+}
+
+class ElapseStateControl {
+  System system;
+  boolean elapsing = false;
+  boolean started = false;
+  int rowIndex;
+  boolean dir; // true for right, false for left
+
+  ElapseStateControl(System _s, int _r, boolean _d) {
+    system = _s;
+    rowIndex = _r % (_s.nOfStrips / _s.nOfCol);
+    dir = _d;
   }
 
+  void bang() {
+    elapsing = true;
+  }
+
+  void update() {
+    if (elapsing) {
+      if (!started) {
+        started = true;
+        int s = nOfLED / 2;
+        int e = dir ? (nOfLED - 1) : 0;
+        system.bangElapseOne(4 + rowIndex, s, e, dir);
+      }
+      if (!system.strips[4 + rowIndex].elapses.get(0).elapsing) {
+        int s = !dir ? (nOfLED - 1) : 0;
+        int e = dir ? (nOfLED - 1) : 0;
+        system.bangElapseOne((dir ? 8 : 0) + rowIndex, s, e, dir);
+        elapsing = false;
+        started = false;
+      }
+    }
+  }
 }

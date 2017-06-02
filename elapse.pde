@@ -378,9 +378,10 @@ void keyPressed() {
     *******/
     // system.triggerComplexSequence(2);
 
-    // system.bangElapseOne(0, 30, 0, false);
-    system.bangElapseLeft();
+
+    // system.bangElapseLeft();
     system.bangElapseRight();
+    // system.elapseStateControls[1].bang();
   }
 
 }
