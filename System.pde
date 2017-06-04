@@ -177,9 +177,9 @@ class System {
     { 8, 11, 10, 9}, // 20
     { 8, 10, 9, 11},
     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
-    { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},
-    { 0, 0, 0, 0},
-    { 0, 0, 0, 0}, // 25
+    { 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3},
+    { 3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8},
+    { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ,0}, // 25
     { 0, 0, 0, 0},
     { 0, 0, 0, 0},
     { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11,
@@ -235,7 +235,7 @@ class System {
     }
   }
 
-  // complex sequence
+  // complex sequence (一次會執行不只一條燈)
   boolean complexSequenceActivate = false;
   int complexSequenceTriggerIndex = 0;
   boolean bangComplexSequence = false;
@@ -310,7 +310,7 @@ class System {
 
 
 
-  // asynce sequence
+  // asynce sequence （同個數字要被cue到兩次才會開關。 一次亮暗一條）
   boolean asyncSequenceActivate = false;
   int asyncSequenceTriggerIndex = 0;
   boolean bangAsyncSequence = false;
@@ -319,18 +319,18 @@ class System {
   int asyncSequenceCount = 0;
   int asyncSequenceCountLimit = 5;
   int[][] asyncSequenceSet = {
-    { 0, 1, 2, 3, 3, 2, 1, 0 },
+    { 0, 1, 2, 3, 3, 2, 1, 0 },     //0
     { 4, 5, 6, 7, 7, 6, 5, 4 },
     { 8, 9, 10, 11, 11, 10, 9, 8 },
 
     { 3, 2, 1, 0, 0, 1, 2, 3 },
     { 7, 6, 5, 4, 4, 5, 6, 7 },
-    { 11, 10, 9, 8, 8, 9, 10, 11 },
+    { 11, 10, 9, 8, 8, 9, 10, 11 },  //5
 
     { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11,
-      11, 10, 9, 8, 4, 5, 6, 7, 3, 2, 1, 0 },
+      11, 10, 9, 8, 4, 5, 6, 7, 3, 2, 1, 0 },  //6
     { 3, 2, 1, 0, 4, 5, 6, 7, 11, 10, 9, 8,
-      8, 9, 10, 11, 7, 6, 5, 4, 0, 1, 2, 3 },
+      8, 9, 10, 11, 7, 6, 5, 4, 0, 1, 2, 3 },  //7
   };
   boolean[] asyncRecord = {
     false, false, false, false,
@@ -387,7 +387,7 @@ class System {
     }
   }
 
-  // complex async sequence
+  // complex async sequence （一次亮暗好幾條）
   boolean complexAsyncSequenceActivate = false;
   int complexAsyncSequenceTriggerIndex = 0;
   boolean bangComplexAsyncSequence = false;

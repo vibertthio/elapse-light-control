@@ -13,8 +13,8 @@ SyphonServer server;
 PGraphics canvas;
 
 // MIDI
-MidiBus midiA;
-MidiBus midiB;
+MidiBus midiA; //APC20
+MidiBus midiB; //Midi Fighter
 
 // Arduino
 Serial myPort;
@@ -263,7 +263,9 @@ public void controlEvent(ControlEvent theEvent) {
   }
 }
 
-// midi
+
+//---------------------------------------------------------------------------
+// midi mapping
 void noteOn(int channel, int pitch, int velocity) {
   //piano //CC是有區間,連續變化的
   // Receive a noteOn
@@ -275,6 +277,7 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Velocity:"+velocity);
   println("****************************");
 
+//==============================================================
   //APC20
   //Bang effects (先排完一列，再換下一列) (以pitch為主，再分channel)
 
@@ -305,17 +308,17 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(channel == 1) {
       system.bangComplexSequence(1);         // 閃 <-
     } else if(channel == 2) {
-      system.bangSequence(0, 30);                // 0, 7, 8
+      system.bangSequence(0, 30);            // 0, 7, 8
     } else if(channel == 3) {
-      system.bangSequence(1, 30);                // 3, 4, 11
+      system.bangSequence(1, 30);            // 3, 4, 11
     } else if(channel == 4) {
-      system.bangSequence(2, 30);                // 0, 3, 4, 7, 8, 11
+      system.bangSequence(2, 30);            // 0, 3, 4, 7, 8, 11
     } else if(channel == 5) {
       system.bangComplexSequence(2);         // 四列輪閃
     } else if(channel == 6) {
-      system.bangSequence(4, 30);                // 0, 11, 4, 8
+      system.bangSequence(4, 30);            // 0, 11, 4, 8
     } else if(channel == 7) {
-      system.bangSequence(5, 30);                // 9, 2, 1, 10
+      system.bangSequence(5, 30);            // 9, 2, 1, 10
     }
   }
   //Third Row ******************************** 左(0-3)
@@ -325,17 +328,17 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(channel == 1) {
       system.turnOnEasingForCol(800, 0);     // 前緩後急閃
     } else if(channel == 2) {
-      system.bangSequence(10, 30);               // (▼)往下閃
+      system.bangSequence(10, 30);           // (▼)往下閃
     } else if(channel == 3) {
-      system.bangSequence(11, 30);               // (▲)往上閃
+      system.bangSequence(11, 30);           // (▲)往上閃
     } else if(channel == 4) {
-      system.bangSequence(12, 30);               // 0, 3, 2, 1
+      system.bangSequence(12, 30);           // 0, 3, 2, 1
     } else if(channel == 5) {
       system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
     } else if(channel == 6) {
       system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
     } else if(channel == 7) {
-      system.bangSequence(13, 30);               // 0, 2, 1, 3
+      system.bangSequence(13, 30);           // 0, 2, 1, 3
     }
   }
   //Fourth Row ******************************** 中(4-7)
@@ -345,17 +348,17 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(channel == 1) {
       system.turnOnEasingForCol(800, 1);     // 前緩後急閃
     } else if(channel == 2) {
-      system.bangSequence(14, 30);               // (▼)往下閃
+      system.bangSequence(14, 30);           // (▼)往下閃
     } else if(channel == 3) {
-      system.bangSequence(15, 30);               // (▲)往上閃
+      system.bangSequence(15, 30);           // (▲)往上閃
     } else if(channel == 4) {
-      system.bangSequence(16, 30);               // 4, 7, 5, 6
+      system.bangSequence(16, 30);           // 4, 7, 5, 6
     } else if(channel == 5) {
-      system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+      system.bangAsyncSequence(4);           // dim on (▲), then dim off (▼)
     } else if(channel == 6) {
-      system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+      system.bangAsyncSequence(1);           // dim on (▼), then dim off (▲)
     } else if(channel == 7)  {
-      system.bangSequence(17, 30);               // 7, 5, 6, 4
+      system.bangSequence(17, 30);           // 7, 5, 6, 4
     }
   }
   //Fifth Row ******************************** 右(8-11)
@@ -365,100 +368,95 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(channel == 1) {
       system.turnOnEasingForCol(800, 2);     // 前緩後急閃
     } else if(channel == 2) {
-      system.bangSequence(18, 30);               // (▼)往下閃
+      system.bangSequence(18, 30);           // (▼)往下閃
     } else if(channel == 3) {
-      system.bangSequence(19, 30);               // (▲)往上閃
+      system.bangSequence(19, 30);           // (▲)往上閃
     } else if(channel == 4) {
-      system.bangSequence(20, 30);               // 8, 11, 10, 9
+      system.bangSequence(20, 30);           // 8, 11, 10, 9
     } else if(channel == 5) {
-      system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+      system.bangAsyncSequence(5);           // dim on (▲), then dim off (▼)
     } else if(channel == 6) {
-      system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+      system.bangAsyncSequence(2);           // dim on (▼), then dim off (▲)
     } else if(channel == 7) {
-      system.bangSequence(21, 30);               // 8, 10, 9, 11
+      system.bangSequence(21, 30);           // 8, 10, 9, 11
     }
   }
 
   //The Rightest Column ********************************
   if (channel == 0) {
     if (pitch == 82) {
-      system.turnRandOneOn();                   // dim on one (rand)
+      system.turnRandOneOn();               // dim on one (rand)
     } else if (pitch == 83) {
-      system.turnRandOneOff();                  // dim off one (rand)
+      system.turnRandOneOff();              // dim off one (rand)
     }
   }
 
 //***************************************************************************
   //IndependentControl for elapse effects
+  //trigger Independent mode
+  if (channel == 0){
+    if (pitch == 81){
+      system.triggerIndependentControl();
+    }
+  }
+  //elapse effects
   if (pitch == 52) {
     if (channel == 0) {
-      system.triggerComplexSequence(2);
+      //0-3 random one elapse
     } else if (channel == 1) {
-
+      //8-11 random one elapse
     } else if (channel == 2) {
       system.bangElapseLeft();
     } else if (channel == 3) {
       system.bangElapseRight();
     } else if (channel == 4) {
-
+      system.bangComplexAsyncElapse(0);
     } else if (channel == 5) {
-
+      system.bangComplexAsyncElapse(1);
     } else if (channel == 6) {
-      system.elapseStateControls[1].bang();
+
     }
   }
-  //system.triggerIndependentControl();
-
-  //system.bangComplexAsyncElapse(1);
-
-  //-
-
-  // system.triggerComplexSequence(2);
-
-
-  // system.bangElapseLeft();
-  // system.bangElapseRight();
-  // system.elapseStateControls[1].bang();
 
 //***************************************************************************
   //Auto effects (以縱行先排完，再換下一行)
-  // first column
+  // first column (左至右輪閃)
   if (channel == 0) {
     if (pitch == 50) {
-      system.triggerComplexSequence(2);         // 往下輪閃
+      system.triggerSequence(22);               // 從左至右往下輪閃
     } else if(pitch == 49) {
-      system.triggerComplexSequence(3);         // 往上輪閃
+      system.triggerSequence(24);               // 從左至右往上輪閃
     } else if(pitch == 48) {
       system.triggerSequence(6);                // 左到右, 上到下 輪閃
     }
   }
-  // second column
+  // second column (右至左輪閃)
   if (channel == 1) {
     if (pitch == 50) {
-      system.triggerComplexSequence(2);         // 往下輪閃
+      system.triggerSequence(23);               // 從右至左往下輪閃
     } else if(pitch == 49) {
-      system.triggerComplexSequence(3);         // 往上輪閃
+      system.triggerSequence(25);               // 從右至左往上輪閃
     } else if(pitch == 48) {
-      system.triggerSequence(6);                // 左到右, 上到下 輪閃
+      system.triggerSequence(7);                // 右到左, 上到下 輪閃
     }
   }
-  // third column
+  // third column (往上下閃)
   if (channel == 2) {
     if (pitch == 50) {
-      system.triggerComplexSequence(2);         // 往下輪閃
+      system.triggerSequence(28);               // 左至右上到下輪閃,右至左下至上閃回來
     } else if(pitch == 49) {
-      system.triggerComplexSequence(3);         // 往上輪閃
+      system.triggerSequence(29);               // 左至右下到上輪閃,右至左上到下閃回來
     }
   }
   // fourth column (往上下亮暗)
   if (channel == 3) {
     if (pitch == 50) {
-      system.triggerComplexAsyncSequence(0);    // 往下全開/關
+      system.triggerAsyncSequence(6);           // 左至右上到下亮暗,右至左下至上亮暗回來
     } else if(pitch == 49) {
-      system.triggerComplexAsyncSequence(1);    // 往上全開/關
+      system.triggerAsyncSequence(7);           // 左至右下到上亮暗,右至左上到下亮暗回來
     }
   }
-  // fifth column
+  // fifth column (三行同步閃)
   if (channel == 4) {
     if (pitch == 50) {
       system.triggerComplexSequence(2);         // 往下輪閃
@@ -466,31 +464,19 @@ void noteOn(int channel, int pitch, int velocity) {
       system.triggerComplexSequence(3);         // 往上輪閃
     }
   }
-  // sixth column
+  // sixth column (三行同步亮暗)
   if (channel == 5) {
     if (pitch == 50) {
-      system.triggerComplexSequence(2);         // 往下輪閃
+      system.triggerComplexAsyncSequence(0);    // 往下全開/關
     } else if(pitch == 49) {
-      system.triggerComplexSequence(3);         // 往上輪閃
+      system.triggerComplexAsyncSequence(1);    // 往上全開/關
     }
   }
-  //
-  // system.triggerComplexAsyncSequence(0);    // 往下全開/關
-  // system.triggerComplexAsyncSequence(1);    // 往上全開/關
-  // system.triggerSequence(7);                // 右到左, 上到下 輪閃
-  //
-  // third column
-  // system.triggerSequence(28);
-  // system.triggerSequence(29);
-  //
-  // fourth column
-  // system.triggerAsyncSequence(6);
-  // system.triggerAsyncSequence(7);
 
-//------------------------------------------------------------------
+//==============================================================
 
   //Midi Fighter
-  //page 1 *************************
+  //page 1 ************************* dim on/off for LED strips
   if (channel == 11) {
     //for Single
     if (pitch == 48) {
@@ -528,9 +514,85 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if (pitch == 39) {
       system.turnOff(50);
     }
+  //page 2 ************************* elapse independentControl
+    //for Single elapse
+      else if (pitch == 64) {
+      system.elapseStateControls[1].bang();
+    } else if (pitch == 60) {
+      system.elapseStateControls[3].bang();
+    } else if (pitch == 56) {
+      system.elapseStateControls[5].bang();
+    } else if (pitch == 52) {
+      system.elapseStateControls[7].bang();
+    } else if (pitch == 65) {
+      system.elapseStateControls[0].bang();
+    } else if (pitch == 61) {
+      system.elapseStateControls[2].bang();
+    } else if (pitch == 57) {
+      system.elapseStateControls[4].bang();
+    } else if (pitch == 53) {
+      system.elapseStateControls[8].bang();
+    }
+    //for All elapse
+      else if (pitch == 66) {
+      system.bangElapseLeft();
+    } else if (pitch == 62) {
+      system.bangElapseRight();
+    } else if (pitch == 58) {
+      system.bangComplexAsyncElapse(0);
+    } else if (pitch == 54) {
+      system.bangComplexAsyncElapse(1);
+    }
+    //trigger for independentControl mode
+      else if (pitch == 67) {
+
+    } else if (pitch == 63) {
+
+    } else if (pitch == 59) {
+
+    } else if (pitch == 55) {
+      system.triggerIndependentControl();
+    }
+  //page 3 ************************* LED strips bang patterns
+    //for sequences / complex sequences
+      else if (pitch == 80) {
+      system.bangSequence(22, 30);           // 從左至右往下輪閃
+    } else if (pitch == 76) {
+      system.bangSequence(24, 30);           // 從左至右往上輪閃
+    } else if (pitch == 72) {
+      system.bangSequence(23, 30);           // 從右至左往下輪閃
+    } else if (pitch == 68) {
+      system.bangSequence(25, 30);           // 從右至左往上輪閃
+    } else if (pitch == 81) {
+      system.bangSequence(28, 30);           // 左至右上到下輪閃,右至左下至上閃回來
+    } else if (pitch == 77) {
+      system.bangSequence(29, 30);           // 左至右下到上輪閃,右至左上到下閃回來
+    } else if (pitch == 73) {
+      system.bangComplexSequence(2);         // 往下輪閃
+    } else if (pitch == 69) {
+      system.bangComplexSequence(3);         // 往上輪閃
+    }
+    //for async sequences / async complex sequences
+      else if (pitch == 82) {
+      system.bangAsyncSequence(6);           // 左至右上到下亮暗,右至左下至上亮暗回來
+    } else if (pitch == 78) {
+      system.bangAsyncSequence(7);           // 左至右下到上亮暗,右至左上到下亮暗回來
+    } else if (pitch == 74) {
+      system.bangComplexAsyncSequence(0);    // 往下全開/關
+    } else if (pitch == 70) {
+      system.bangComplexAsyncSequence(1);    // 往上全開/關
+    }
+    //for All
+      else if (pitch == 83) {
+      system.turnOn(50);
+    } else if (pitch == 79) {
+      system.dimRepeat(1, 30);
+    } else if (pitch == 75) {
+      system.dimRepeat(3, 30);
+    } else if (pitch == 71) {
+      system.turnOff(50);
+    }
   }
-
-
 }
 
 //Processing to Arduino (for tube control)
@@ -556,6 +618,15 @@ void keyPressed() {
   if (key == 'b') {
     myPort.write(8);
   }
+
+  if (key == 'z') {
+    system.triggerIndependentControl();
+  }
+  if (key == 'x') {
+    system.bangComplexAsyncElapse(1);
+  }
+}
+
 
     /*******
     First Row
@@ -646,7 +717,6 @@ void keyPressed() {
   //  system.bangComplexAsyncElapse(1);
   //}
 
-}
 
 //Auto effects
   /*if (pitch == 50) {
