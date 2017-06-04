@@ -7,11 +7,11 @@ class System {
     strips = new Strip[nOfStrips];
     for (int i = 0; i < nOfStrips; i++) {
       if (i < 4) {
-        strips[i] = new Strip(i, 0, 400, 300 + 50 * i);
+        strips[i] = new Strip(i, 0, 350, 150 + 50 * i);
       } else if (i < 8) {
         strips[i] = new Strip(i, 0, width / 2, 100 + 50 * (i - 4));
       } else { // i < 12
-        strips[i] = new Strip(i, 0, 1000, 300 + 50 * (i - 8));
+        strips[i] = new Strip(i, 0, 1050, 150 + 50 * (i - 8));
       }
     }
 

@@ -1,4 +1,4 @@
-final int nOfLED = 40;
+final int nOfLED = 60;
 
 class Strip {
   int id;
