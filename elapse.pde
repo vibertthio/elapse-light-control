@@ -13,7 +13,8 @@ SyphonServer server;
 PGraphics canvas;
 
 // MIDI
-MidiBus midi;
+MidiBus midiA;
+MidiBus midiB;
 
 // Arduino
 Serial myPort;
@@ -40,7 +41,8 @@ void setup() {
   server = new SyphonServer(this, "Processing Syphon");
 
   // midi
-  midi = new MidiBus(this, 1, -1);
+  midiA = new MidiBus(this, "Akai APC20", -1, "Akai");
+  midiB = new MidiBus(this, "Midi Fighter 3D", -1, "DJ TECHTOOLS");
 
   // Arduino
   printArray(Serial.list());
@@ -273,29 +275,288 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Velocity:"+velocity);
   println("****************************");
 
-  //Bang effects
+  //APC20
+  //Bang effects (先排完一列，再換下一列) (以pitch為主，再分channel)
+
+  //First Row ******************************** 全部
   if (pitch == 53) {
     if (channel == 0) {
-      system.dimRepeat(1,80);
+      system.dimRepeat(1, 20);              // blink
+    } else if(channel == 1) {
+      system.turnOnEasingFor(800);          // 前緩後急閃
     } else if(channel == 2) {
-      system.dimRepeat(3,50);
+      system.dimRepeat(3, 50);              // 連閃 3 次
+    } else if(channel == 3) {
+      system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
+    } else if(channel == 4) {
+      system.turnRandOneOnFor(20, 20);      // randon strobe (one)
+    } else if(channel == 5) {
+      system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
     } else if(channel == 6) {
-      system.turnOn(300);
+      system.turnOn(100);                   // dim on
     } else if(channel == 7) {
-      // system.turnOff(300);
-      system.turnFourRandSequence(50);
+      system.turnOff(100);                  // dim off
+    }
+  }
+  //Second Row ******************************** 三面輪流
+  if (pitch == 54) {
+    if (channel == 0) {
+      system.bangComplexSequence(0);         // 閃 ->
+    } else if(channel == 1) {
+      system.bangComplexSequence(1);         // 閃 <-
+    } else if(channel == 2) {
+      system.bangSequence(0, 30);                // 0, 7, 8
+    } else if(channel == 3) {
+      system.bangSequence(1, 30);                // 3, 4, 11
+    } else if(channel == 4) {
+      system.bangSequence(2, 30);                // 0, 3, 4, 7, 8, 11
+    } else if(channel == 5) {
+      system.bangComplexSequence(2);         // 四列輪閃
+    } else if(channel == 6) {
+      system.bangSequence(4, 30);                // 0, 11, 4, 8
+    } else if(channel == 7) {
+      system.bangSequence(5, 30);                // 9, 2, 1, 10
+    }
+  }
+  //Third Row ******************************** 左(0-3)
+  if (pitch == 55) {
+    if (channel == 0) {
+      system.dimRepeatCol(1, 20, 0);         // 閃
+    } else if(channel == 1) {
+      system.turnOnEasingForCol(800, 0);     // 前緩後急閃
+    } else if(channel == 2) {
+      system.bangSequence(10, 30);               // (▼)往下閃
+    } else if(channel == 3) {
+      system.bangSequence(11, 30);               // (▲)往上閃
+    } else if(channel == 4) {
+      system.bangSequence(12, 30);               // 0, 3, 2, 1
+    } else if(channel == 5) {
+      system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+    } else if(channel == 6) {
+      system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+    } else if(channel == 7) {
+      system.bangSequence(13, 30);               // 0, 2, 1, 3
+    }
+  }
+  //Fourth Row ******************************** 中(4-7)
+  if (pitch == 56) {
+    if (channel == 0) {
+      system.dimRepeatCol(1, 20, 1);         // 閃
+    } else if(channel == 1) {
+      system.turnOnEasingForCol(800, 1);     // 前緩後急閃
+    } else if(channel == 2) {
+      system.bangSequence(14, 30);               // (▼)往下閃
+    } else if(channel == 3) {
+      system.bangSequence(15, 30);               // (▲)往上閃
+    } else if(channel == 4) {
+      system.bangSequence(16, 30);               // 4, 7, 5, 6
+    } else if(channel == 5) {
+      system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+    } else if(channel == 6) {
+      system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+    } else if(channel == 7)  {
+      system.bangSequence(17, 30);               // 7, 5, 6, 4
+    }
+  }
+  //Fifth Row ******************************** 右(8-11)
+  if (pitch == 57) {
+    if (channel == 0) {
+      system.dimRepeatCol(1, 20, 2);         // 閃
+    } else if(channel == 1) {
+      system.turnOnEasingForCol(800, 2);     // 前緩後急閃
+    } else if(channel == 2) {
+      system.bangSequence(18, 30);               // (▼)往下閃
+    } else if(channel == 3) {
+      system.bangSequence(19, 30);               // (▲)往上閃
+    } else if(channel == 4) {
+      system.bangSequence(20, 30);               // 8, 11, 10, 9
+    } else if(channel == 5) {
+      system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+    } else if(channel == 6) {
+      system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+    } else if(channel == 7) {
+      system.bangSequence(21, 30);               // 8, 10, 9, 11
     }
   }
 
-  if (pitch == 52) {
-    if (channel == 0) {
-      // system.elapseTrigger();
+  //The Rightest Column ********************************
+  if (channel == 0) {
+    if (pitch == 82) {
+      system.turnRandOneOn();                   // dim on one (rand)
+    } else if (pitch == 83) {
+      system.turnRandOneOff();                  // dim off one (rand)
     }
   }
+
+//***************************************************************************
+  //IndependentControl for elapse effects
+  if (pitch == 52) {
+    if (channel == 0) {
+      system.triggerComplexSequence(2);
+    } else if (channel == 1) {
+
+    } else if (channel == 2) {
+      system.bangElapseLeft();
+    } else if (channel == 3) {
+      system.bangElapseRight();
+    } else if (channel == 4) {
+
+    } else if (channel == 5) {
+
+    } else if (channel == 6) {
+      system.elapseStateControls[1].bang();
+    }
+  }
+  //system.triggerIndependentControl();
+
+  //system.bangComplexAsyncElapse(1);
+
+  //-
+
+  // system.triggerComplexSequence(2);
+
+
+  // system.bangElapseLeft();
+  // system.bangElapseRight();
+  // system.elapseStateControls[1].bang();
+
+//***************************************************************************
+  //Auto effects (以縱行先排完，再換下一行)
+  // first column
+  if (channel == 0) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    } else if(pitch == 48) {
+      system.triggerSequence(6);                // 左到右, 上到下 輪閃
+    }
+  }
+  // second column
+  if (channel == 1) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    } else if(pitch == 48) {
+      system.triggerSequence(6);                // 左到右, 上到下 輪閃
+    }
+  }
+  // third column
+  if (channel == 2) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    }
+  }
+  // fourth column (往上下亮暗)
+  if (channel == 3) {
+    if (pitch == 50) {
+      system.triggerComplexAsyncSequence(0);    // 往下全開/關
+    } else if(pitch == 49) {
+      system.triggerComplexAsyncSequence(1);    // 往上全開/關
+    }
+  }
+  // fifth column
+  if (channel == 4) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    }
+  }
+  // sixth column
+  if (channel == 5) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    }
+  }
+  //
+  // system.triggerComplexAsyncSequence(0);    // 往下全開/關
+  // system.triggerComplexAsyncSequence(1);    // 往上全開/關
+  // system.triggerSequence(7);                // 右到左, 上到下 輪閃
+  //
+  // third column
+  // system.triggerSequence(28);
+  // system.triggerSequence(29);
+  //
+  // fourth column
+  // system.triggerAsyncSequence(6);
+  // system.triggerAsyncSequence(7);
+
+//------------------------------------------------------------------
+
+  //Midi Fighter
+  //page 1 *************************
+  if (channel == 11) {
+    //for Single
+    if (pitch == 48) {
+      system.turnOneOnFor(8, 30, 50);
+    } else if (pitch == 44) {
+      system.turnOneOnFor(9, 30, 50);
+    } else if (pitch == 40) {
+      system.turnOneOnFor(10, 30, 50);
+    } else if (pitch == 36) {
+      system.turnOneOnFor(11, 30, 50);
+    } else if (pitch == 49) {
+      system.turnOneOnFor(4, 30, 50);
+    } else if (pitch == 45) {
+      system.turnOneOnFor(5, 30, 50);
+    } else if (pitch == 41) {
+      system.turnOneOnFor(6, 30, 50);
+    } else if (pitch == 37) {
+      system.turnOneOnFor(7, 30, 50);
+    } else if (pitch == 50) {
+      system.turnOneOnFor(0, 30, 50);
+    } else if (pitch == 46) {
+      system.turnOneOnFor(1, 30, 50);
+    } else if (pitch == 42) {
+      system.turnOneOnFor(2, 30, 50);
+    } else if (pitch == 38) {
+      system.turnOneOnFor(3, 30, 50);
+    }
+    //for All
+      else if (pitch == 51) {
+      system.turnOn(50);
+    } else if (pitch == 47) {
+      system.dimRepeat(1, 30);
+    } else if (pitch == 43) {
+      system.dimRepeat(3, 30);
+    } else if (pitch == 39) {
+      system.turnOff(50);
+    }
+  }
+
+
 }
+
 //Processing to Arduino (for tube control)
 void keyPressed() {
+  if (key == 'q') {
+    myPort.write(1);
+  }
+  if (key == 'w') {
+    myPort.write(2);
+  }
+  if (key == 'e') {
+    myPort.write(3);
+  }
+  if (key == 'r') {
+    myPort.write(4);
+  }
+  if (key == 't') {
+    myPort.write(5);
+  }
   if (key == 'a') {
+    myPort.write(7);
+  }
+  if (key == 'b') {
+    myPort.write(8);
+  }
+
     /*******
     First Row
     *******/
@@ -368,11 +629,11 @@ void keyPressed() {
     // system.triggerComplexSequence(0);
 
 
-    system.triggerIndependentControl();
+  //  system.triggerIndependentControl();
 
-  }
+  //}
 
-  if (key == 'b') {
+  //if (key == 'b') {
     /*******
     Test for trigger logic
     *******/
@@ -382,8 +643,8 @@ void keyPressed() {
     // system.bangElapseLeft();
     // system.bangElapseRight();
     // system.elapseStateControls[1].bang();
-    system.bangComplexAsyncElapse(1);
-  }
+  //  system.bangComplexAsyncElapse(1);
+  //}
 
 }
 
