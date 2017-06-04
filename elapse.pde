@@ -599,9 +599,9 @@ void keyPressed() {
     Auto Effect
     *******/
     // first column
-    // system.triggerComplexSequence(2);         // 往下輪閃
-    // system.triggerComplexSequence(3);         // 網上輪閃
-    // system.triggerSequence(6);                // 左到右, 上到下 輪閃
+    // system.triggerSequence(22);         // 往下輪閃
+    // system.triggerSequence(23);         // 網上輪閃
+    // system.triggerSequence(6);          // 左到右, 上到下 輪閃
     //
     // second column
     // system.triggerComplexAsyncSequence(0);    // 往下全開/關
