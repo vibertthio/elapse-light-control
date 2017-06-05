@@ -628,6 +628,36 @@ class System {
     elapseStateControls[id].bang();
   }
 
+  void triggerFadeControl() {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].triggerFadeControl();
+      switch(i / 4) {
+        case(0) :
+          strips[i].setFadeControlMode(1);
+          break;
+        case(1) :
+          strips[i].setFadeControlMode(0);
+          break;
+        case(2) :
+          strips[i].setFadeControlMode(2);
+          break;
+      }
+    }
+  }
+  void setFadeControlValue(float value) {
+    for (int i = 0; i < 4; i++) {
+      strips[i].setFadeControlValue(
+        constrain(value * 3.0 - 1.0, 0, 1)
+      );
+      strips[i + 4].setFadeControlValue(
+        constrain(value * 3.0, 0, 1)
+      );
+      strips[i + 8].setFadeControlValue(
+        constrain(value * 3.0 - 1.0, 0, 1)
+      );
+    }
+  }
+
 }
 
 class ElapseStateControl {

@@ -160,7 +160,7 @@ void gui() {
      .moveTo(g3)
      ;
 
-  cp5.addSlider("world")
+  cp5.addSlider("elapse")
      .setPosition(60,50)
      .setSize(100,20)
      .setRange(0,127)
@@ -209,6 +209,10 @@ public void controlEvent(ControlEvent theEvent) {
     if (theEvent.controller().getName() == "master") {
       float value = theEvent.controller().getValue();
       master = value / 127.0;
+    } else if (theEvent.controller().getName() == "elapse") {
+      float value = theEvent.controller().getValue() / 127.0;
+      // TODO
+      system.setFadeControlValue(value);
     }
 
 
@@ -605,8 +609,7 @@ void keyPressed() {
   }
 
   if (key == 'v') {
-    system.randomBangElapseLeft();
-    system.randomBangElapseRight();
+    system.triggerFadeControl();
   }
 
 

@@ -25,14 +25,18 @@ class Strip {
   boolean blink = false;
   TimeLine turnOnTimer;
 
-
-
   // easing
+  ArrayList<Elapse> elapses;
   boolean easing = false;
   boolean easingBlink = false;
   float easeRatio;
   float dimOnEaseRatio = 8;
   float dimOffEaseRatio = 0.2;
+
+  // fade control
+  boolean fadeControl = false;
+  int fadeControlMode = 0; // 0 for middle, 1 for left, 2 for right
+  float fadeControlValue = 0;
 
 
   Strip(int _id, float _a, float _x, float _y) {
@@ -241,37 +245,14 @@ class Strip {
     dimTimer.limit = ll;
   }
 
-  void switchIndeMode() {
-    independentControl = !independentControl;
-  }
-
-
   void triggerIndependentControl() {
     independentControl = !independentControl;
   }
+
   void setIndependentControl(boolean s) {
     independentControl = s;
   }
 
-  // elapse
-  ArrayList<Elapse> elapses;
-  // boolean elapsing = false;
-  // int elapseStartIndex;
-  // int elapseEndIndex;
-  // boolean elapseDirection = true; // true for right, false for left
-  // int elapseIndex = 0;
-  // int elapseEdge = 500;
-  // int elapseCount = 0;
-  // int elapseCountLimit = 0;
-  //
-  // void bangElapse(int st, int en, boolean dir) {
-  //   elapsing = true;
-  //   elapseStartIndex = constrain(st, 0, nOfLED - 1);
-  //   elapseEndIndex = constrain(en, 0, nOfLED - 1);
-  //   elapseDirection = dir;
-  //   elapseIndex = constrain(st, 0, nOfLED - 1);
-  //   elapseCount = 0;
-  // }
   void bangElapse(int st, int en, boolean dir) {
     for (int i = 0, n = elapses.size(); i < n; i++) {
       Elapse e = elapses.get(i);
@@ -284,6 +265,7 @@ class Strip {
     elapses.add(e);
     e.bang(st, en, dir);
   }
+
 
   // dim 3 times
   void dimRepeat(int time, int ll) {
@@ -298,6 +280,7 @@ class Strip {
     dimTimer.breathState = false;
     dimTimer.startTimer();
   }
+
   void dimRepeatInverse(int time, int ll) {
     alpha = 255;
     independentControl = false;
@@ -309,6 +292,85 @@ class Strip {
     dimTimer.repeatTime = time;
     dimTimer.breathState = false;
     dimTimer.startTimer();
+  }
+
+  void triggerFadeControl() {
+    fadeControl = !fadeControl;
+  }
+
+  void setFadeControlMode(int m) {
+    fadeControlMode = m;
+  }
+
+  void setFadeControlValue(float value) {
+    if (independentControl && fadeControl) {
+
+
+      if (fadeControlMode == 0)  { // middle
+        int number = int( (nOfLED / 2) * value );
+        if (value > fadeControlValue) {
+          // left
+          for (int i = nOfLED / 2, n =  nOfLED / 2 - number; i > n; i--) {
+            if (lights[i].alpha < 5) {
+              lights[i].turnOn(50);
+            }
+          }
+
+          // right
+          for (int i = nOfLED / 2, n =  nOfLED / 2 + number; i < n; i++) {
+            if (lights[i].alpha < 5) {
+              lights[i].turnOn(50);
+            }
+          }
+        } else {
+          // left
+          for (int i = 0, n =  nOfLED / 2 - number; i <= n; i++) {
+            if (lights[i].alpha > 5) {
+              lights[i].turnOff(50);
+            }
+          }
+
+          // right
+          for (int i = nOfLED - 1, n =  nOfLED / 2 + number; i > n; i--) {
+            if (lights[i].alpha > 5) {
+              lights[i].turnOff(50);
+            }
+          }
+        }
+      } else if (fadeControlMode == 1) { // left
+        int number = int( nOfLED  * value );
+        if (value > fadeControlValue) {
+          for (int i = nOfLED - 1, n =  nOfLED - 1 - number; i > n; i--) {
+            if (lights[i].alpha < 5) {
+              lights[i].turnOn(50);
+            }
+          }
+        } else {
+          for (int i = 0, n = nOfLED - 1 - number; i <= n; i++) {
+            if (lights[i].alpha > 5) {
+              lights[i].turnOff(50);
+            }
+          }
+        }
+      } else if (fadeControlMode == 2) { // right
+        int number = int( nOfLED  * value );
+        if (value > fadeControlValue) {
+          for (int i = 0, n = number; i < n; i++) {
+            if (lights[i].alpha < 5) {
+              lights[i].turnOn(50);
+            }
+          }
+        } else {
+          for (int i = nOfLED - 1, n = number; i >= n; i--) {
+            if (lights[i].alpha > 5) {
+              lights[i].turnOff(50);
+            }
+          }
+        }
+      }
+
+    }
+    fadeControlValue = constrain(value, 0, 1);
   }
 
 }
