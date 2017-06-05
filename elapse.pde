@@ -219,7 +219,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeat(1, 20);              // blink
     } else if(channel == 1) {
-      system.turnOnEasingFor(300);          // 前緩後急閃
+      system.turnOnEasingFor(250);          // 前緩後急閃
     } else if(channel == 2) {
       system.dimRepeat(3, 50);              // 連閃 3 次
     } else if(channel == 3) {
@@ -260,7 +260,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 0);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(300, 0);     // 前緩後急閃
+      system.turnOnEasingForCol(250, 0);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(10, 30);           // (▼)往下閃
     } else if(channel == 3) {
@@ -280,7 +280,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 1);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(300, 1);     // 前緩後急閃
+      system.turnOnEasingForCol(250, 1);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(14, 30);           // (▼)往下閃
     } else if(channel == 3) {
@@ -300,7 +300,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 2);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(300, 2);     // 前緩後急閃
+      system.turnOnEasingForCol(250, 2);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(18, 30);           // (▼)往下閃
     } else if(channel == 3) {
