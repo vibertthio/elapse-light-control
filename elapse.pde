@@ -54,35 +54,6 @@ void draw() {
   system.render();
 }
 
-/*void keyPressed() {
-
-  if (key == '1') {
-    system.turnOn();
-  }
-  if (key == '2') {
-    system.turnOff();
-  }
-  if (key == '3') {
-    system.turnOn(300);
-  }
-  if (key == '4') {
-    system.turnOff(300);
-  }
-  if (key == '5') {
-    system.dimRepeat(1, 50);
-  }
-  if (key == '6') {
-    system.dimRepeat(3, 30);
-  }
-  if (key == '7') {
-    system.blink();
-  }
-  if (key == '8') {
-    system.elapseTrigger();
-  }
-}
-*/
-
 void gui() {
 
   cp5 = new ControlP5(this);
@@ -277,7 +248,7 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Velocity:"+velocity);
   println("****************************");
 
-//==============================================================
+  //==============================================================
   //APC20
   //Bang effects (先排完一列，再換下一列) (以pitch為主，再分channel)
 
@@ -391,7 +362,7 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-//***************************************************************************
+  //***************************************************************************
   //IndependentControl for elapse effects
   //trigger Independent mode
   if (channel == 0){
@@ -418,7 +389,7 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-//***************************************************************************
+  //***************************************************************************
   //Auto effects (以縱行先排完，再換下一行)
   // first column (左至右輪閃)
   if (channel == 0) {
@@ -473,7 +444,7 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-//==============================================================
+  //==============================================================
 
   //Midi Fighter
   //page 1 ************************* dim on/off for LED strips
@@ -625,79 +596,102 @@ void keyPressed() {
   if (key == 'x') {
     system.bangComplexAsyncElapse(1);
   }
-}
+
+  if (key == '1') {
+    system.triggerAsyncSequence(6);
+  }
+  // if (key == '2') {
+  //   system.elapseStateControls[1].bang();
+  // }
+  // if (key == '3') {
+  //   system.elapseStateControls[2].bang();
+  // }
+  // if (key == '4') {
+  //   system.elapseStateControls[3].bang();
+  // }
+  // if (key == '5') {
+  //   system.elapseStateControls[4].bang();
+  // }
+  // if (key == '6') {
+  //   system.elapseStateControls[5].bang();
+  // }
+  // if (key == '7') {
+  //   system.elapseStateControls[6].bang();
+  // }
+  // if (key == '8') {
+  //   system.elapseStateControls[7].bang();
+  // }
+
+  /*******
+  First Row
+  *******/
+
+  // system.dimRepeat(1, 20);              // blink
+  // system.turnOnEasingFor(800);          // 前緩後急閃
+  // system.dimRepeat(3, 50);              // 連閃 3 次
+  // system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
+  // system.turnRandOneOnFor(20, 20);      // randon strobe (one)
+  // system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
+  // system.turnOn(100);                   // dim on
+  // system.turnOff(100);                  // dim off
+
+  /*******
+  Second Row
+  *******/
+  // system.bangComplexSequence(0);         // 閃 ->
+  // system.bangComplexSequence(1);         // 閃 <-
+  // system.bangSequence(0);                // 0, 7, 8
+  // system.bangSequence(1);                // 3, 4, 11
+  // system.bangSequence(2);                // 0, 3, 4, 7, 8, 11
+  // system.bangComplexSequence(2);         // 四列輪閃
+  // system.bangSequence(4);                // 0, 11, 4, 8
+  // system.bangSequence(5);                // 9, 2, 1, 10
+
+  /*******
+  Third Row
+  *******/
+  // system.dimRepeatCol(1, 20, 0);         // 閃
+  // turnOnEasingForCol(800, 0);            // 前緩後急閃
+  // system.bangSequence(10);               // (▼)往下閃
+  // system.bangSequence(11);               // (▲)往上閃
+  // system.bangSequence(12);               // 0, 3, 2, 1
+  // system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+  // system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+  // system.bangSequence(13);               // 0, 2, 1, 3
 
 
-    /*******
-    First Row
-    *******/
+  /*******
+  Auto Effect
+  *******/
+  // first column
+  // system.triggerSequence(22);         // 往下輪閃
+  // system.triggerSequence(23);         // 網上輪閃
+  // system.triggerSequence(6);          // 左到右, 上到下 輪閃
+  //
+  // second column
+  // system.triggerComplexAsyncSequence(0);    // 往下全開/關
+  // system.triggerComplexAsyncSequence(1);    // 往上全開/關
+  // system.triggerSequence(7);                // 右到左, 上到下 輪閃
+  //
+  // third column
+  // system.triggerSequence(28);
+  // system.triggerSequence(29);
+  //
+  // fourth column
+  // system.triggerAsyncSequence(6);
+  // system.triggerAsyncSequence(7);
 
-    // system.dimRepeat(1, 20);              // blink
-    // system.turnOnEasingFor(800);          // 前緩後急閃
-    // system.dimRepeat(3, 50);              // 連閃 3 次
-    // system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
-    // system.turnRandOneOnFor(20, 20);      // randon strobe (one)
-    // system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
-    // system.turnOn(100);                   // dim on
-    // system.turnOff(100);                  // dim off
-
-    /*******
-    Second Row
-    *******/
-    // system.bangComplexSequence(0);         // 閃 ->
-    // system.bangComplexSequence(1);         // 閃 <-
-    // system.bangSequence(0);                // 0, 7, 8
-    // system.bangSequence(1);                // 3, 4, 11
-    // system.bangSequence(2);                // 0, 3, 4, 7, 8, 11
-    // system.bangComplexSequence(2);         // 四列輪閃
-    // system.bangSequence(4);                // 0, 11, 4, 8
-    // system.bangSequence(5);                // 9, 2, 1, 10
-
-    /*******
-    Third Row
-    *******/
-    // system.dimRepeatCol(1, 20, 0);         // 閃
-    // turnOnEasingForCol(800, 0);            // 前緩後急閃
-    // system.bangSequence(10);               // (▼)往下閃
-    // system.bangSequence(11);               // (▲)往上閃
-    // system.bangSequence(12);               // 0, 3, 2, 1
-    // system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
-    // system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
-    // system.bangSequence(13);               // 0, 2, 1, 3
+  /*******
+  The Rightest Column
+  *******/
+  // system.turnRandOneOn();                   // dim on one (rand)
+  // system.turnRandOneOff();                  // dim off one (rand)
 
 
-    /*******
-    Auto Effect
-    *******/
-    // first column
-    // system.triggerSequence(22);         // 往下輪閃
-    // system.triggerSequence(23);         // 網上輪閃
-    // system.triggerSequence(6);          // 左到右, 上到下 輪閃
-    //
-    // second column
-    // system.triggerComplexAsyncSequence(0);    // 往下全開/關
-    // system.triggerComplexAsyncSequence(1);    // 往上全開/關
-    // system.triggerSequence(7);                // 右到左, 上到下 輪閃
-    //
-    // third column
-    // system.triggerSequence(28);
-    // system.triggerSequence(29);
-    //
-    // fourth column
-    // system.triggerAsyncSequence(6);
-    // system.triggerAsyncSequence(7);
-
-    /*******
-    The Rightest Column
-    *******/
-    // system.turnRandOneOn();                   // dim on one (rand)
-    // system.turnRandOneOff();                  // dim off one (rand)
-
-
-    /*******
-    Test for trigger logic
-    *******/
-    // system.triggerComplexSequence(0);
+  /*******
+  Test for trigger logic
+  *******/
+  // system.triggerComplexSequence(0);
 
 
   //  system.triggerIndependentControl();
@@ -705,22 +699,16 @@ void keyPressed() {
   //}
 
   //if (key == 'b') {
-    /*******
-    Test for trigger logic
-    *******/
-    // system.triggerComplexSequence(2);
+  /*******
+  Test for trigger logic
+  *******/
+  // system.triggerComplexSequence(2);
 
 
-    // system.bangElapseLeft();
-    // system.bangElapseRight();
-    // system.elapseStateControls[1].bang();
+  // system.bangElapseLeft();
+  // system.bangElapseRight();
+  // system.elapseStateControls[1].bang();
   //  system.bangComplexAsyncElapse(1);
   //}
 
-
-//Auto effects
-  /*if (pitch == 50) {
-    if (channel == 0){
-      system.
-    }
-  */
+}

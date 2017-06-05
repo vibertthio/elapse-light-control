@@ -368,7 +368,6 @@ class System {
     if (asyncSequenceActivate) {
       asyncSequenceCount++;
       if (asyncSequenceCount > asyncSequenceCountLimit) {
-        println(asyncSequenceIndex);
 
         if (asyncRecord[asyncSequence[asyncSequenceIndex]]) {
           turnOneOff(asyncSequence[asyncSequenceIndex], asyncSequenceTime);
