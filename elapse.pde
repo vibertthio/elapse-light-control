@@ -223,19 +223,19 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(channel == 2) {
       system.dimRepeat(3, 50);              // 連閃 3 次
     } else if(channel == 3) {
-      system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
+      system.bangComplexSequence(0);        // 閃 ->
+      //system.turnRandMultipleOnFor(20, 20);       // randon strobe (multiple)
     } else if(channel == 4) {
-      system.turnRandOneOnFor(20, 20);      // randon strobe (one)
+      system.bangComplexSequence(1);        // 閃 <-
+      //system.turnRandOneOnFor(20, 20);            // randon strobe (one)
     } else if(channel == 5) {
-      system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
+      system.bangComplexSequence(2);        // 四列輪閃
     } else if(channel == 6) {
-      system.turnOn(100);                   // dim on
-    } else if(channel == 7) {
-      system.turnOff(100);                  // dim off
+      system.bangFourRandSequence(50);    // randon strobe (取 4 個輪流)
     }
   }
   //Second Row ******************************** 三面輪流
-  if (pitch == 54) {
+  /*if (pitch == 54) {
     if (channel == 0) {
       system.bangComplexSequence(0);         // 閃 ->
     } else if(channel == 1) {
@@ -254,6 +254,7 @@ void noteOn(int channel, int pitch, int velocity) {
       system.bangSequence(5, 30);            // 9, 2, 1, 10
     }
   }
+  */
   //Third Row ******************************** 左(0-3)
   if (pitch == 55) {
     if (channel == 0) {
