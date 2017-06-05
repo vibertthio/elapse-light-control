@@ -207,8 +207,8 @@ public void controlEvent(ControlEvent theEvent) {
 
     // test for fader
     if (theEvent.controller().getName() == "master") {
-      float value = theEvent.controller().getValue();
-      master = value / 127.0;
+      float value = theEvent.controller().getValue() / 127.0;
+      master = value;
     } else if (theEvent.controller().getName() == "elapse") {
       float value = theEvent.controller().getValue() / 127.0;
       // TODO
@@ -270,7 +270,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeat(1, 20);              // blink
     } else if(channel == 1) {
-      system.turnOnEasingFor(800);          // 前緩後急閃
+      system.turnOnEasingFor(300);          // 前緩後急閃
     } else if(channel == 2) {
       system.dimRepeat(3, 50);              // 連閃 3 次
     } else if(channel == 3) {
@@ -310,7 +310,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 0);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(800, 0);     // 前緩後急閃
+      system.turnOnEasingForCol(300, 0);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(10, 30);           // (▼)往下閃
     } else if(channel == 3) {
@@ -330,7 +330,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 1);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(800, 1);     // 前緩後急閃
+      system.turnOnEasingForCol(300, 1);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(14, 30);           // (▼)往下閃
     } else if(channel == 3) {
@@ -350,7 +350,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if (channel == 0) {
       system.dimRepeatCol(1, 20, 2);         // 閃
     } else if(channel == 1) {
-      system.turnOnEasingForCol(800, 2);     // 前緩後急閃
+      system.turnOnEasingForCol(300, 2);     // 前緩後急閃
     } else if(channel == 2) {
       system.bangSequence(18, 30);           // (▼)往下閃
     } else if(channel == 3) {
@@ -386,9 +386,9 @@ void noteOn(int channel, int pitch, int velocity) {
   //elapse effects
   if (pitch == 52) {
     if (channel == 0) {
-      //0-3 random one elapse
+      system.randomBangElapseLeft();
     } else if (channel == 1) {
-      //8-11 random one elapse
+      system.randomBangElapseRight();
     } else if (channel == 2) {
       system.bangElapseLeft();
     } else if (channel == 3) {
@@ -403,7 +403,7 @@ void noteOn(int channel, int pitch, int velocity) {
   }
 
   //***************************************************************************
-  //Auto effects (以縱行先排完，再換下一行)
+  //AUTO EFFECTS turn-On (以縱行先排完，再換下一行)
   // first column (左至右輪閃)
   if (channel == 0) {
     if (pitch == 50) {
@@ -454,6 +454,16 @@ void noteOn(int channel, int pitch, int velocity) {
       system.triggerComplexAsyncSequence(0);    // 往下全開/關
     } else if(pitch == 49) {
       system.triggerComplexAsyncSequence(1);    // 往上全開/關
+    }
+  }
+
+  //***************************************************************************
+
+  //Switch
+  //trigger Fade Control mode
+  if (channel == 7) {
+    if (pitch == 52) {
+      system.triggerFadeControl();
     }
   }
 
@@ -575,6 +585,107 @@ void noteOn(int channel, int pitch, int velocity) {
       system.dimRepeat(3, 30);
     } else if (pitch == 71) {
       system.turnOff(50);
+    }
+  }
+}
+
+void noteOff(int channel, int pitch, int velocity) {
+  //piano //CC是有區間,連續變化的
+  // Receive a noteOn
+  println();
+  println("Note Off:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Pitch:"+pitch);
+  println("Velocity:"+velocity);
+  println("****************************");
+
+  //Switch
+  //turn off fade control mode
+  /*
+  if (channel == 4) {
+    if(number == 21) {
+    system.triggerFadeControl();
+    }
+  }
+*/
+  //AUTO EFFECTS turn-off
+  // first column (左至右輪閃)
+  if (channel == 0) {
+    if (pitch == 50) {
+      system.triggerSequence(22);               // 從左至右往下輪閃
+    } else if(pitch == 49) {
+      system.triggerSequence(24);               // 從左至右往上輪閃
+    } else if(pitch == 48) {
+      system.triggerSequence(6);                // 左到右, 上到下 輪閃
+    }
+  }
+  // second column (右至左輪閃)
+  if (channel == 1) {
+    if (pitch == 50) {
+      system.triggerSequence(23);               // 從右至左往下輪閃
+    } else if(pitch == 49) {
+      system.triggerSequence(25);               // 從右至左往上輪閃
+    } else if(pitch == 48) {
+      system.triggerSequence(7);                // 右到左, 上到下 輪閃
+    }
+  }
+  // third column (往上下閃)
+  if (channel == 2) {
+    if (pitch == 50) {
+      system.triggerSequence(28);               // 左至右上到下輪閃,右至左下至上閃回來
+    } else if(pitch == 49) {
+      system.triggerSequence(29);               // 左至右下到上輪閃,右至左上到下閃回來
+    }
+  }
+  // fourth column (往上下亮暗)
+  if (channel == 3) {
+    if (pitch == 50) {
+      system.triggerAsyncSequence(6);           // 左至右上到下亮暗,右至左下至上亮暗回來
+    } else if(pitch == 49) {
+      system.triggerAsyncSequence(7);           // 左至右下到上亮暗,右至左上到下亮暗回來
+    }
+  }
+  // fifth column (三行同步閃)
+  if (channel == 4) {
+    if (pitch == 50) {
+      system.triggerComplexSequence(2);         // 往下輪閃
+    } else if(pitch == 49) {
+      system.triggerComplexSequence(3);         // 往上輪閃
+    }
+  }
+  // sixth column (三行同步亮暗)
+  if (channel == 5) {
+    if (pitch == 50) {
+      system.triggerComplexAsyncSequence(0);    // 往下全開/關
+    } else if(pitch == 49) {
+      system.triggerComplexAsyncSequence(1);    // 往上全開/關
+    }
+  }
+}
+
+void controllerChange(int channel, int number, int value) {
+  // Receive a controllerChange
+  println();
+  println("Controller Change:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Number:"+number);
+  println("Value:"+value);
+  println("****************************");
+
+  //Slider Control
+  //master lighting value
+  if (channel == 0) {
+    if(number == 14) {
+    master = value/127.0;
+    }
+  }
+  //Fade control
+  //fade control slider
+  if (channel == 4) {
+    if(number == 7) {
+      system.setFadeControlValue(value/127.0);
     }
   }
 }

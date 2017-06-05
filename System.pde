@@ -317,7 +317,7 @@ class System {
   int asyncSequenceTime = 50;
   int asyncSequenceIndex = 0;
   int asyncSequenceCount = 0;
-  int asyncSequenceCountLimit = 5;
+  int asyncSequenceCountLimit = 2;
   int[][] asyncSequenceSet = {
     { 0, 1, 2, 3, 3, 2, 1, 0 },     //0
     { 4, 5, 6, 7, 7, 6, 5, 4 },
