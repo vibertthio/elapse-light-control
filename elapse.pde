@@ -8,6 +8,9 @@ import processing.serial.*;
 ControlP5 cp5;
 Accordion accordion;
 
+//midi mode monitor
+//boolean buttonStatus[] = new boolean[2];
+
 // Syphon
 SyphonServer server;
 PGraphics canvas;
@@ -38,6 +41,12 @@ void setup() {
   // controlP5
   gui();
 
+//  // midi mode monitor
+//  for(int i=0; i<2; i++){
+//    buttonStatus[i] = false;
+//  }
+//  reRenderAll();
+
   // Syphon
   server = new SyphonServer(this, "Processing Syphon");
 
@@ -53,6 +62,12 @@ void setup() {
 void draw() {
   background(0);
   system.render();
+
+  // midi mode monitor
+  //for(int i=0; i<2; i++){
+  //  buttonStatus[i] = false;
+  //}
+  //reRenderAll();
 }
 
 void gui() {
@@ -158,6 +173,28 @@ public void controlEvent(ControlEvent theEvent) {
     }
   }
 }
+
+//---------------------------------------------------------------------------
+// midi mode monitor
+/*void render(int i) {
+  fill(137,201,151);
+  noStroke();
+  rect(50+i*50,250,30,30);
+}
+
+void reRenderAll() {
+  for(int i=0;i<2;i++) {
+    if(buttonStatus[i] == false) {
+      fill(137,201,151);
+    }
+    else {
+      fill(255,155,155);
+    }
+    rect(50+i*50,250,30,30);
+    noStroke();
+  }
+
+}*/
 
 
 //---------------------------------------------------------------------------
@@ -293,8 +330,13 @@ void noteOn(int channel, int pitch, int velocity) {
   if (channel == 0){
     if (pitch == 81){
       system.triggerIndependentControl();
+      //midi mode monitor change color
+      //buttonStatus[0] = !buttonStatus[0];
+      //render(0);
+      //reRenderAll();
     }
   }
+
   //elapse effects
   if (pitch == 52) {
     if (channel == 0) {
@@ -376,6 +418,10 @@ void noteOn(int channel, int pitch, int velocity) {
   if (channel == 7) {
     if (pitch == 52) {
       system.triggerFadeControl();
+      //midi mode monitor change color
+      //buttonStatus[1] = !buttonStatus[1];
+      //render(1);
+      //reRenderAll();
     }
   }
 
