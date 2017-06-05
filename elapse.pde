@@ -152,10 +152,10 @@ void gui() {
      .moveTo(g3)
      ;
 
-  cp5.addSlider("hello")
+  cp5.addSlider("master")
      .setPosition(60,20)
      .setSize(100,20)
-     .setRange(100,500)
+     .setRange(0,127)
      .setValue(100)
      .moveTo(g3)
      ;
@@ -163,7 +163,7 @@ void gui() {
   cp5.addSlider("world")
      .setPosition(60,50)
      .setSize(100,20)
-     .setRange(100,500)
+     .setRange(0,127)
      .setValue(200)
      .moveTo(g3)
      ;
@@ -204,6 +204,14 @@ public void controlEvent(ControlEvent theEvent) {
     //   " / name:"+theEvent.controller().getName()+
     //   " / value:"+theEvent.controller().getValue()
     //   );
+
+    // test for fader
+    if (theEvent.controller().getName() == "master") {
+      float value = theEvent.controller().getValue();
+      master = value / 127.0;
+    }
+
+
     switch(theEvent.controller().getId()) {
       case(0):
         system.turnOn(300);
