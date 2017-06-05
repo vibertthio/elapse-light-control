@@ -134,7 +134,7 @@ class Strip {
       for (int i = 0; i < nOfLED; i++) {
         float x = length * i / nOfLED;
         canvas.noStroke();
-        canvas.fill(255, alpha);
+        canvas.fill(255, alpha * master);
         canvas.ellipse(x, 0, 5, 5);
       }
 
@@ -402,7 +402,7 @@ class Light {
 
     canvas.translate(xpos, ypos);
     canvas.noStroke();
-    canvas.fill(255, alpha);
+    canvas.fill(255, alpha * master);
     canvas.ellipse(0, 0, 5, 5);
 
     canvas.popMatrix();

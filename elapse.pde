@@ -22,7 +22,8 @@ Serial myPort;
 System system;
 
 color c = color(0, 160, 100);
-// final int nOfLED = 60;
+float master = 1;
+
 
 void settings() {
   size(1400, 800, P3D);
@@ -590,37 +591,17 @@ void keyPressed() {
     myPort.write(8);
   }
 
-  if (key == 'z') {
+
+  if (key == 'x') {
     system.triggerIndependentControl();
   }
-  if (key == 'x') {
-    system.bangComplexAsyncElapse(1);
+
+  if (key == 'v') {
+    system.randomBangElapseLeft();
+    system.randomBangElapseRight();
   }
 
-  if (key == '1') {
-    system.triggerAsyncSequence(6);
-  }
-  // if (key == '2') {
-  //   system.elapseStateControls[1].bang();
-  // }
-  // if (key == '3') {
-  //   system.elapseStateControls[2].bang();
-  // }
-  // if (key == '4') {
-  //   system.elapseStateControls[3].bang();
-  // }
-  // if (key == '5') {
-  //   system.elapseStateControls[4].bang();
-  // }
-  // if (key == '6') {
-  //   system.elapseStateControls[5].bang();
-  // }
-  // if (key == '7') {
-  //   system.elapseStateControls[6].bang();
-  // }
-  // if (key == '8') {
-  //   system.elapseStateControls[7].bang();
-  // }
+
 
   /*******
   First Row

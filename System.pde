@@ -542,6 +542,14 @@ class System {
     elapseStateControls[3].bang();
     elapseStateControls[5].bang();
     elapseStateControls[7].bang();  }
+  void randomBangElapseLeft() {
+    int index = int(random(4)) * 2;
+    bangElapse(index);
+  }
+  void randomBangElapseRight() {
+    int index = int(random(4)) * 2 + 1;
+    bangElapse(index);
+  }
 
   boolean complexAsyncElapseActivate = false;
   int complexAsyncElapseTriggerIndex = 0;
@@ -619,6 +627,7 @@ class System {
   void bangElapse(int id) {
     elapseStateControls[id].bang();
   }
+
 }
 
 class ElapseStateControl {
