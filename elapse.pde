@@ -491,17 +491,17 @@ void noteOn(int channel, int pitch, int velocity) {
       system.setElapseCountLimit(0);
       system.randomBangElapseRight();        // 右random一條elapse
     } else if (pitch == 72) {
-      system.setElapseCountLimit(3);
+      system.setElapseCountLimit(2);
       system.bangElapseLeft();               // 左整面elapse
     } else if (pitch == 68) {
-      system.setElapseCountLimit(3);
+      system.setElapseCountLimit(2);
       system.bangElapseRight();              // 右整面elapse
     } else if (pitch == 81) {
-      system.setElapseCountLimit(5);
-      system.bangComplexAsyncSequence(0);    // 全由上往下elapse
+      system.setElapseCountLimit(3);
+      system.bangComplexAsyncElapse(0);  // 全由上往下elapse
     } else if (pitch == 77) {
-      system.setElapseCountLimit(5);
-      system.bangComplexAsyncSequence(1);    // 全由下往上elapse
+      system.setElapseCountLimit(3);
+      system.bangComplexAsyncElapse(1);   // 全由下往上elapse
     }
     //else if (pitch == 73) {
     //  system.
@@ -526,6 +526,56 @@ void noteOn(int channel, int pitch, int velocity) {
     }
     //else if (pitch == 75) {}              //按住移動上下可調總亮度
     //else if (pitch == 71) {}              //按住移動上下可滑順亮
+    //page 4 ************************* basic LED control with tubes
+      else if (pitch == 96) {
+      system.turnOneOnFor(8, 30, 50);     // 8閃一
+      myPort.write(1);
+    } else if (pitch == 92) {
+      system.turnOneOnFor(9, 30, 50);     // 9閃一
+      myPort.write(1);
+    } else if (pitch == 88) {
+      system.turnOneOnFor(10, 30, 50);    // 10閃一
+      myPort.write(1);
+    } else if (pitch == 84) {
+      system.turnOneOnFor(11, 30, 50);    // 11閃一
+      myPort.write(1);
+    } else if (pitch == 97) {
+      system.turnOneOnFor(4, 30, 50);     // 4閃一
+      myPort.write(2);
+    } else if (pitch == 93) {
+      system.turnOneOnFor(5, 30, 50);     // 5閃一
+      myPort.write(2);
+    } else if (pitch == 89) {
+      system.turnOneOnFor(6, 30, 50);     // 6閃一
+      myPort.write(2);
+    } else if (pitch == 85) {
+      system.turnOneOnFor(7, 30, 50);     // 7閃一
+      myPort.write(2);
+    } else if (pitch == 98) {
+      system.turnOneOnFor(0, 30, 50);     // 0閃一
+      myPort.write(3);
+    } else if (pitch == 94) {
+      system.turnOneOnFor(1, 30, 50);     // 1閃一
+      myPort.write(3);
+    } else if (pitch == 90) {
+      system.turnOneOnFor(2, 30, 50);     // 2閃一
+      myPort.write(3);
+    } else if (pitch == 86) {
+      system.turnOneOnFor(3, 30, 50);     // 3閃一
+      myPort.write(3);
+    }
+    //for All
+      else if (pitch == 99) {
+      system.turnOnEasingFor(250);        // 前緩後急閃
+    } else if (pitch == 95) {
+      system.dimRepeat(1, 30);            // 全閃一
+      myPort.write(5);
+    } else if (pitch == 91) {
+      system.dimRepeat(3, 30);            // 全閃三
+      myPort.write(5);
+    } else if (pitch == 87) {
+      system.bangComplexSequence(2);      // 四列輪閃
+    }
   }
 
   //側邊鍵
