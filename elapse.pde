@@ -423,122 +423,140 @@ void noteOn(int channel, int pitch, int velocity) {
   if (channel == 11) {
     //for Single
     if (pitch == 48) {
-      system.turnOneOnFor(8, 30, 50);
+      system.turnOneOnFor(8, 30, 50);     // 8閃一
     } else if (pitch == 44) {
-      system.turnOneOnFor(9, 30, 50);
+      system.turnOneOnFor(9, 30, 50);     // 9閃一
     } else if (pitch == 40) {
-      system.turnOneOnFor(10, 30, 50);
+      system.turnOneOnFor(10, 30, 50);    // 10閃一
     } else if (pitch == 36) {
-      system.turnOneOnFor(11, 30, 50);
+      system.turnOneOnFor(11, 30, 50);    // 11閃一
     } else if (pitch == 49) {
-      system.turnOneOnFor(4, 30, 50);
+      system.turnOneOnFor(4, 30, 50);     // 4閃一
     } else if (pitch == 45) {
-      system.turnOneOnFor(5, 30, 50);
+      system.turnOneOnFor(5, 30, 50);     // 5閃一
     } else if (pitch == 41) {
-      system.turnOneOnFor(6, 30, 50);
+      system.turnOneOnFor(6, 30, 50);     // 6閃一
     } else if (pitch == 37) {
-      system.turnOneOnFor(7, 30, 50);
+      system.turnOneOnFor(7, 30, 50);     // 7閃一
     } else if (pitch == 50) {
-      system.turnOneOnFor(0, 30, 50);
+      system.turnOneOnFor(0, 30, 50);     // 0閃一
     } else if (pitch == 46) {
-      system.turnOneOnFor(1, 30, 50);
+      system.turnOneOnFor(1, 30, 50);     // 1閃一
     } else if (pitch == 42) {
-      system.turnOneOnFor(2, 30, 50);
+      system.turnOneOnFor(2, 30, 50);     // 2閃一
     } else if (pitch == 38) {
-      system.turnOneOnFor(3, 30, 50);
+      system.turnOneOnFor(3, 30, 50);     // 3閃一
     }
     //for All
       else if (pitch == 51) {
-      system.turnOn(50);
+      system.turnOnEasingFor(250);        // 前緩後急閃
     } else if (pitch == 47) {
-      system.dimRepeat(1, 30);
+      system.dimRepeat(1, 30);            // 全閃一
     } else if (pitch == 43) {
-      system.dimRepeat(3, 30);
+      system.dimRepeat(3, 30);            // 全閃三
     } else if (pitch == 39) {
-      system.turnOff(50);
+      system.bangComplexSequence(2);      // 四列輪閃
     }
-  //page 2 ************************* elapse independentControl
-    //for Single elapse
+    //page 2 ************************* pattern LED control
+    //右 (8-11)
       else if (pitch == 64) {
-      system.elapseStateControls[1].bang();
+      system.dimRepeatCol(1, 20, 2);      // 閃
     } else if (pitch == 60) {
-      system.elapseStateControls[3].bang();
+      system.bangSequence(18, 30);        // 往下閃
     } else if (pitch == 56) {
-      system.elapseStateControls[5].bang();
+      system.bangAsyncSequence(5);        // dim on ^, then dim off v
     } else if (pitch == 52) {
-      system.elapseStateControls[7].bang();
-    } else if (pitch == 65) {
-      system.elapseStateControls[0].bang();
+      system.bangAsyncSequence(2);        // dim on v, then dim off ^
+    }
+    //中 (4-7)
+      else if (pitch == 65) {
+      system.dimRepeatCol(1, 20, 1);      // 閃
     } else if (pitch == 61) {
-      system.elapseStateControls[2].bang();
+      system.bangSequence(14, 30);        // 往下閃
     } else if (pitch == 57) {
-      system.elapseStateControls[4].bang();
+      system.bangAsyncSequence(4);        // dim on ^, then dim off v
     } else if (pitch == 53) {
-      system.elapseStateControls[8].bang();
+      system.bangAsyncSequence(1);        // dim on v, then dim off ^
     }
-    //for All elapse
+    //左 (0-3)
       else if (pitch == 66) {
-      system.bangElapseLeft();
+      system.dimRepeatCol(1, 20, 0);      // 閃
     } else if (pitch == 62) {
-      system.bangElapseRight();
+      system.bangSequence(10, 30);        // 往下閃
     } else if (pitch == 58) {
-      system.bangComplexAsyncElapse(0);
+      system.bangAsyncSequence(3);        // dim on ^, then dim off v
     } else if (pitch == 54) {
-      system.bangComplexAsyncElapse(1);
+      system.bangAsyncSequence(0);        // dim on v, then dim off ^
     }
-    //trigger for independentControl mode
+    //for all
       else if (pitch == 67) {
-
+      system.turnOnEasingFor(250);        // 前緩後急閃
     } else if (pitch == 63) {
-
+      system.dimRepeat(1, 30);            // 全閃一
     } else if (pitch == 59) {
-
+      system.bangComplexAsyncSequence(0); // 往下全開/關
     } else if (pitch == 55) {
-      system.triggerIndependentControl();
+      system.bangComplexAsyncSequence(1); // 往下全開/關
     }
-  //page 3 ************************* LED strips bang patterns
-    //for sequences / complex sequences
+    //page 3 ************************* elapse control + blink
+    //elapse control
       else if (pitch == 80) {
-      system.bangSequence(22, 30);           // 從左至右往下輪閃
+      system.randomBangElapseLeft();         // 左random一條elapse
     } else if (pitch == 76) {
-      system.bangSequence(24, 30);           // 從左至右往上輪閃
+      system.randomBangElapseRight();        // 右random一條elapse
     } else if (pitch == 72) {
-      system.bangSequence(23, 30);           // 從右至左往下輪閃
+      system.bangElapseLeft();               // 左整面elapse
     } else if (pitch == 68) {
-      system.bangSequence(25, 30);           // 從右至左往上輪閃
+      system.bangElapseRight();              // 右整面elapse
     } else if (pitch == 81) {
-      system.bangSequence(28, 30);           // 左至右上到下輪閃,右至左下至上閃回來
+      system.bangComplexAsyncSequence(0);    // 全由上往下elapse
     } else if (pitch == 77) {
-      system.bangSequence(29, 30);           // 左至右下到上輪閃,右至左上到下閃回來
-    } else if (pitch == 73) {
-      system.bangComplexSequence(2);         // 往下輪閃
-    } else if (pitch == 69) {
-      system.bangComplexSequence(3);         // 往上輪閃
+      system.bangComplexAsyncSequence(1);    // 全由下往上elapse
     }
-    //for async sequences / async complex sequences
+    //else if (pitch == 73) {
+    //  system.
+    //} else if (pitch == 69) {
+    //  system.
+    //}
+    //blink (R,M,L,All)
       else if (pitch == 82) {
-      system.bangAsyncSequence(6);           // 左至右上到下亮暗,右至左下至上亮暗回來
+      system.dimRepeatCol(1, 20, 0);        // 左閃
     } else if (pitch == 78) {
-      system.bangAsyncSequence(7);           // 左至右下到上亮暗,右至左上到下亮暗回來
+      system.dimRepeatCol(1, 20, 1);        // 中閃
     } else if (pitch == 74) {
-      system.bangComplexAsyncSequence(0);    // 往下全開/關
+      system.dimRepeatCol(1, 20, 2);        // 右閃
     } else if (pitch == 70) {
-      system.bangComplexAsyncSequence(1);    // 往上全開/關
+      system.dimRepeat(1, 30);              // 全閃
     }
-    //for All
+    //Switch
       else if (pitch == 83) {
-      system.turnOn(50);
+      system.triggerIndependentControl();   // 獨立mode on/off
     } else if (pitch == 79) {
-      system.dimRepeat(1, 30);
-    } else if (pitch == 75) {
-      system.dimRepeat(3, 30);
-    } else if (pitch == 71) {
-      system.turnOff(50);
+      system.triggerFadeControl();          // FadeControl mode on/off(跟獨立mode不衝突)
+    }
+    //else if (pitch == 75) {}              //按住移動上下可調總亮度
+    //else if (pitch == 71) {}              //按住移動上下可滑順亮
+  }
+
+  //側邊鍵
+  if (channel == 12) {
+    if (pitch == 22) {
+      system.turnOn(80);                    // dim on
+    } else if (pitch == 21) {
+      system.triggerSequence(22, 30);       // 從左至右往下輪閃
+    } else if (pitch == 20) {
+      system.triggerSequence(23, 30);       // 從右至左往下輪閃
+    } else if (pitch == 25) {
+      system.turnOff(80);                   // dim off
+    } else if (pitch == 24) {
+      system.triggerComplexSequence(2);     // 往下輪閃
+    } else if (pitch == 23) {
+      system.triggerComplexSequence(3);     // 往上輪閃
     }
   }
 }
 
-void noteOff(int channel, int pitch, int velocity) {
+/*void noteOff(int channel, int pitch, int velocity) {
   //piano //CC是有區間,連續變化的
   // Receive a noteOn
   println();
@@ -551,13 +569,13 @@ void noteOff(int channel, int pitch, int velocity) {
 
   //Switch
   //turn off fade control mode
-  /*
+
   if (channel == 4) {
     if(number == 21) {
     system.triggerFadeControl();
     }
   }
-  */
+
   //AUTO EFFECTS turn-off
   // first column (左至右輪閃)
   if (channel == 0) {
@@ -611,7 +629,7 @@ void noteOff(int channel, int pitch, int velocity) {
       system.triggerComplexAsyncSequence(1);    // 往上全開/關
     }
   }
-}
+} */
 
 void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
