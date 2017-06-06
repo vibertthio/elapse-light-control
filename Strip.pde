@@ -317,28 +317,28 @@ class Strip {
           // left
           for (int i = nOfLED / 2, n =  nOfLED / 2 - number; i > n; i--) {
             if (lights[i].alpha < 5) {
-              lights[i].turnOn(50);
+              lights[i].turnOn();
             }
           }
 
           // right
           for (int i = nOfLED / 2, n =  nOfLED / 2 + number; i < n; i++) {
             if (lights[i].alpha < 5) {
-              lights[i].turnOn(50);
+              lights[i].turnOn();
             }
           }
         } else {
           // left
           for (int i = 0, n =  nOfLED / 2 - number; i <= n; i++) {
             if (lights[i].alpha > 5) {
-              lights[i].turnOff(50);
+              lights[i].turnOff();
             }
           }
 
           // right
           for (int i = nOfLED - 1, n =  nOfLED / 2 + number; i > n; i--) {
             if (lights[i].alpha > 5) {
-              lights[i].turnOff(50);
+              lights[i].turnOff();
             }
           }
         }
@@ -347,13 +347,13 @@ class Strip {
         if (value > fadeControlValue) {
           for (int i = nOfLED - 1, n =  nOfLED - 1 - number; i > n; i--) {
             if (lights[i].alpha < 5) {
-              lights[i].turnOn(50);
+              lights[i].turnOn();
             }
           }
         } else {
           for (int i = 0, n = nOfLED - 1 - number; i <= n; i++) {
             if (lights[i].alpha > 5) {
-              lights[i].turnOff(50);
+              lights[i].turnOff();
             }
           }
         }
@@ -362,13 +362,13 @@ class Strip {
         if (value > fadeControlValue) {
           for (int i = 0, n = number; i < n; i++) {
             if (lights[i].alpha < 5) {
-              lights[i].turnOn(50);
+              lights[i].turnOn();
             }
           }
         } else {
           for (int i = nOfLED - 1, n = number; i >= n; i--) {
             if (lights[i].alpha > 5) {
-              lights[i].turnOff(50);
+              lights[i].turnOff();
             }
           }
         }

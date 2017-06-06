@@ -393,7 +393,7 @@ class System {
   int complexAsyncSequenceTime = 50;
   int complexAsyncSequenceIndex = 0;
   int complexAsyncSequenceCount = 0;
-  int complexAsyncSequenceCountLimit = 5;
+  int complexAsyncSequenceCountLimit = 3;
   int[][][] complexAsyncSequenceSet = {
     {
       { 0, 4, 8 },

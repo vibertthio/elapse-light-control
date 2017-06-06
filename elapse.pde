@@ -8,9 +8,6 @@ import processing.serial.*;
 ControlP5 cp5;
 Accordion accordion;
 
-//midi mode monitor
-//boolean buttonStatus[] = new boolean[2];
-
 // Syphon
 SyphonServer server;
 PGraphics canvas;
@@ -40,10 +37,6 @@ void setup() {
 
   // controlP5
   gui();
-
-
-
-
 
   // Syphon
   server = new SyphonServer(this, "Processing Syphon");
@@ -306,14 +299,14 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-  //The Rightest Column ********************************
+  /*//The Rightest Column ********************************
   if (channel == 0) {
     if (pitch == 82) {
       system.turnRandOneOn();               // dim on one (rand)
     } else if (pitch == 83) {
       system.turnRandOneOff();              // dim off one (rand)
     }
-  }
+  }*/
 
   //***************************************************************************
   //IndependentControl for elapse effects
@@ -321,14 +314,10 @@ void noteOn(int channel, int pitch, int velocity) {
   if (channel == 0){
     if (pitch == 81){
       system.triggerIndependentControl();
-      //midi mode monitor change color
-      //buttonStatus[0] = !buttonStatus[0];
-      //render(0);
-      //reRenderAll();
     }
   }
 
-  //elapse effects
+  /*//elapse effects
   if (pitch == 52) {
     if (channel == 0) {
       system.randomBangElapseLeft();
@@ -343,12 +332,11 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if (channel == 5) {
       system.bangComplexAsyncElapse(1);
     } else if (channel == 6) {
-
     }
-  }
+  }*/
 
   //***************************************************************************
-  //AUTO EFFECTS turn-On (以縱行先排完，再換下一行)
+  /*//AUTO EFFECTS turn-On (以縱行先排完，再換下一行)
   // first column (左至右輪閃)
   if (channel == 0) {
     if (pitch == 50) {
@@ -400,7 +388,7 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(pitch == 49) {
       system.triggerComplexAsyncSequence(1);    // 往上全開/關
     }
-  }
+  }*/
 
   //***************************************************************************
 
@@ -409,10 +397,6 @@ void noteOn(int channel, int pitch, int velocity) {
   if (channel == 7) {
     if (pitch == 52) {
       system.triggerFadeControl();
-      //midi mode monitor change color
-      //buttonStatus[1] = !buttonStatus[1];
-      //render(1);
-      //reRenderAll();
     }
   }
 
@@ -501,16 +485,22 @@ void noteOn(int channel, int pitch, int velocity) {
     //page 3 ************************* elapse control + blink
     //elapse control
       else if (pitch == 80) {
+      system.setElapseCountLimit(0);
       system.randomBangElapseLeft();         // 左random一條elapse
     } else if (pitch == 76) {
+      system.setElapseCountLimit(0);
       system.randomBangElapseRight();        // 右random一條elapse
     } else if (pitch == 72) {
+      system.setElapseCountLimit(3);
       system.bangElapseLeft();               // 左整面elapse
     } else if (pitch == 68) {
+      system.setElapseCountLimit(3);
       system.bangElapseRight();              // 右整面elapse
     } else if (pitch == 81) {
+      system.setElapseCountLimit(5);
       system.bangComplexAsyncSequence(0);    // 全由上往下elapse
     } else if (pitch == 77) {
+      system.setElapseCountLimit(5);
       system.bangComplexAsyncSequence(1);    // 全由下往上elapse
     }
     //else if (pitch == 73) {
@@ -641,6 +631,7 @@ void controllerChange(int channel, int number, int value) {
   println("Value:"+value);
   println("****************************");
 
+  //APC20 --------------------------------------------------
   //Slider Control
   //master lighting value
   if (channel == 0) {
@@ -652,9 +643,21 @@ void controllerChange(int channel, int number, int value) {
   //fade control slider
   if (channel == 4) {
     if(number == 7) {
-      system.setFadeControlValue(value/127.0);
+    system.setFadeControlValue(value/127.0);
     }
   }
+
+  //Midi Fighter --------------------------------------------
+  //master lighting value
+  if (channel == 13) {
+    if (number == 75) {
+    master = value/127.0;
+    }
+  //Fade control
+    else if (number == 71) {
+    system.setFadeControlValue(value/127.0);
+    }
+   }
 }
 
 //Processing to Arduino (for tube control)
@@ -677,7 +680,7 @@ void keyPressed() {
   if (key == 'a') {
     myPort.write(7);
   }
-  if (key == 'b') {
+  if (key == 's') {
     myPort.write(8);
   }
 
