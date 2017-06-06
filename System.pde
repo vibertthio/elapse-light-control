@@ -627,6 +627,11 @@ class System {
   void bangElapse(int id) {
     elapseStateControls[id].bang();
   }
+  void setElapseCountLimit(int ll) {
+    for (int i = 0; i < nOfStrips; i++) {
+      strips[i].setElapseCountLimit(ll);
+    }
+  }
 
   void triggerFadeControl() {
     for (int i = 0; i < nOfStrips; i++) {
@@ -656,6 +661,13 @@ class System {
         constrain(value * 3.0 - 1.0, 0, 1)
       );
     }
+  }
+
+  boolean getIndependentMode() {
+    return (strips[0].independentControl);
+  }
+  boolean getFadeControlMode() {
+    return (strips[0].fadeControl);
   }
 
 }

@@ -266,6 +266,11 @@ class Strip {
     e.bang(st, en, dir);
   }
 
+  void setElapseCountLimit(int ll) {
+    for (int i = 0, n = elapses.size(); i < n; i++) {
+      elapses.get(i).elapseCountLimit = ll;
+    }
+  }
 
   // dim 3 times
   void dimRepeat(int time, int ll) {
@@ -403,11 +408,18 @@ class Elapse {
       elapseCount++;
       if (elapseCount > elapseCountLimit) {
         elapseCount = 0;
-        strip.lights[elapseIndex].turnOnFor(5, elapseEdge);
         int dif = (elapseDirection) ? 1 : (-1);
+        strip.lights[elapseIndex].turnOnFor(5, elapseEdge);
         elapseIndex = (elapseIndex + dif) % nOfLED;
         if (elapseIndex == elapseEndIndex) {
           elapsing = false;
+          return;
+        }
+        strip.lights[elapseIndex].turnOnFor(5, elapseEdge);
+        elapseIndex = (elapseIndex + dif) % nOfLED;
+        if (elapseIndex == elapseEndIndex) {
+          elapsing = false;
+          return;
         }
       }
     }

@@ -41,11 +41,9 @@ void setup() {
   // controlP5
   gui();
 
-//  // midi mode monitor
-//  for(int i=0; i<2; i++){
-//    buttonStatus[i] = false;
-//  }
-//  reRenderAll();
+
+
+
 
   // Syphon
   server = new SyphonServer(this, "Processing Syphon");
@@ -57,17 +55,31 @@ void setup() {
   // Arduino
   printArray(Serial.list());
   myPort = new Serial(this, Serial.list()[3], 9600);
+  // myPort = new Serial(this, Serial.list()[0], 9600);
 }
+
+void renderMIDIMode() {
+
+  if (system.getIndependentMode()) {
+    fill(255,155,155);
+  } else {
+    fill(137,201,151);
+  }
+  rect(50, 250, 30, 30);
+  if (system.getFadeControlMode()) {
+    fill(255,155,155);
+  } else {
+    fill(137,201,151);
+  }
+  rect(100, 250, 30, 30);
+}
+
 
 void draw() {
   background(0);
   system.render();
-
-  // midi mode monitor
-  //for(int i=0; i<2; i++){
-  //  buttonStatus[i] = false;
-  //}
-  //reRenderAll();
+  // control mode
+  renderMIDIMode();
 }
 
 void gui() {
@@ -173,28 +185,6 @@ public void controlEvent(ControlEvent theEvent) {
     }
   }
 }
-
-//---------------------------------------------------------------------------
-// midi mode monitor
-/*void render(int i) {
-  fill(137,201,151);
-  noStroke();
-  rect(50+i*50,250,30,30);
-}
-
-void reRenderAll() {
-  for(int i=0;i<2;i++) {
-    if(buttonStatus[i] == false) {
-      fill(137,201,151);
-    }
-    else {
-      fill(255,155,155);
-    }
-    rect(50+i*50,250,30,30);
-    noStroke();
-  }
-
-}*/
 
 
 //---------------------------------------------------------------------------
@@ -567,7 +557,7 @@ void noteOff(int channel, int pitch, int velocity) {
     system.triggerFadeControl();
     }
   }
-*/
+  */
   //AUTO EFFECTS turn-off
   // first column (左至右輪閃)
   if (channel == 0) {
@@ -680,6 +670,14 @@ void keyPressed() {
 
   if (key == 'v') {
     system.triggerFadeControl();
+  }
+  if (key == 'c') {
+    system.setElapseCountLimit(5);
+    system.bangComplexAsyncElapse(1);
+  }
+  if (key == 'n') {
+    system.setElapseCountLimit(0);
+    system.elapseStateControls[1].bang();
   }
 
 
