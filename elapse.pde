@@ -491,16 +491,16 @@ void noteOn(int channel, int pitch, int velocity) {
       system.setElapseCountLimit(0);
       system.randomBangElapseRight();        // 右random一條elapse
     } else if (pitch == 72) {
-      system.setElapseCountLimit(2);
+      system.setElapseCountLimit(1);
       system.bangElapseLeft();               // 左整面elapse
     } else if (pitch == 68) {
-      system.setElapseCountLimit(2);
+      system.setElapseCountLimit(1);
       system.bangElapseRight();              // 右整面elapse
     } else if (pitch == 81) {
-      system.setElapseCountLimit(3);
+      system.setElapseCountLimit(1);
       system.bangComplexAsyncElapse(0);  // 全由上往下elapse
     } else if (pitch == 77) {
-      system.setElapseCountLimit(3);
+      system.setElapseCountLimit(1);
       system.bangComplexAsyncElapse(1);   // 全由下往上elapse
     }
     //else if (pitch == 73) {
