@@ -194,7 +194,7 @@ void noteOn(int channel, int pitch, int velocity) {
   println("****************************");
 
   //==============================================================
-  //APC20
+  /*APC20
   //Bang effects (先排完一列，再換下一列) (以pitch為主，再分channel)
 
   //First Row ******************************** 全部
@@ -218,7 +218,7 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
   //Second Row ******************************** 三面輪流
-  /*if (pitch == 54) {
+  if (pitch == 54) {
     if (channel == 0) {
       system.bangComplexSequence(0);         // 閃 ->
     } else if(channel == 1) {
@@ -237,7 +237,7 @@ void noteOn(int channel, int pitch, int velocity) {
       system.bangSequence(5, 30);            // 9, 2, 1, 10
     }
   }
-  */
+
   //Third Row ******************************** 左(0-3)
   if (pitch == 55) {
     if (channel == 0) {
@@ -299,14 +299,14 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-  /*//The Rightest Column ********************************
+  //The Rightest Column ********************************
   if (channel == 0) {
     if (pitch == 82) {
       system.turnRandOneOn();               // dim on one (rand)
     } else if (pitch == 83) {
       system.turnRandOneOff();              // dim off one (rand)
     }
-  }*/
+  }
 
   //***************************************************************************
   //IndependentControl for elapse effects
@@ -317,7 +317,7 @@ void noteOn(int channel, int pitch, int velocity) {
     }
   }
 
-  /*//elapse effects
+  //elapse effects
   if (pitch == 52) {
     if (channel == 0) {
       system.randomBangElapseLeft();
@@ -388,7 +388,7 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if(pitch == 49) {
       system.triggerComplexAsyncSequence(1);    // 往上全開/關
     }
-  }*/
+  }
 
   //***************************************************************************
 
@@ -399,7 +399,7 @@ void noteOn(int channel, int pitch, int velocity) {
       system.triggerFadeControl();
     }
   }
-
+  */
   //==============================================================
 
   //Midi Fighter
@@ -528,10 +528,10 @@ void noteOn(int channel, int pitch, int velocity) {
     //else if (pitch == 71) {}              //按住移動上下可滑順亮
     //page 4 ************************* basic LED control with tubes
       else if (pitch == 96) {
-      system.turnOneOnFor(8, 30, 50);     // 8閃一
+      system.dimRepeatCol(1, 20, 2);      // 右閃
       myPort.write(1);
     } else if (pitch == 92) {
-      system.turnOneOnFor(9, 30, 50);     // 9閃一
+      system.bangSequence(18, 30);        // 往下閃
       myPort.write(1);
     } else if (pitch == 88) {
       system.turnOneOnFor(10, 30, 50);    // 10閃一
@@ -540,10 +540,10 @@ void noteOn(int channel, int pitch, int velocity) {
       system.turnOneOnFor(11, 30, 50);    // 11閃一
       myPort.write(1);
     } else if (pitch == 97) {
-      system.turnOneOnFor(4, 30, 50);     // 4閃一
+      system.dimRepeatCol(1, 20, 1);      // 中閃
       myPort.write(2);
     } else if (pitch == 93) {
-      system.turnOneOnFor(5, 30, 50);     // 5閃一
+      system.bangSequence(14, 30);        // 往下閃
       myPort.write(2);
     } else if (pitch == 89) {
       system.turnOneOnFor(6, 30, 50);     // 6閃一
@@ -552,10 +552,10 @@ void noteOn(int channel, int pitch, int velocity) {
       system.turnOneOnFor(7, 30, 50);     // 7閃一
       myPort.write(2);
     } else if (pitch == 98) {
-      system.turnOneOnFor(0, 30, 50);     // 0閃一
+      system.dimRepeatCol(1, 20, 0);      // 左閃
       myPort.write(3);
     } else if (pitch == 94) {
-      system.turnOneOnFor(1, 30, 50);     // 1閃一
+      system.bangSequence(10, 30);        // 往下閃
       myPort.write(3);
     } else if (pitch == 90) {
       system.turnOneOnFor(2, 30, 50);     // 2閃一
@@ -571,10 +571,9 @@ void noteOn(int channel, int pitch, int velocity) {
       system.dimRepeat(1, 30);            // 全閃一
       myPort.write(5);
     } else if (pitch == 91) {
-      system.dimRepeat(3, 30);            // 全閃三
-      myPort.write(5);
+      system.bangComplexSequence(2);      // 往下輪閃
     } else if (pitch == 87) {
-      system.bangComplexSequence(2);      // 四列輪閃
+      system.bangComplexSequence(2);      // 往上輪閃
     }
   }
 
