@@ -569,7 +569,7 @@ void noteOn(int channel, int pitch, int velocity) {
     } else if (pitch == 91) {
       system.bangComplexSequence(2);      // 往下輪閃
     } else if (pitch == 87) {
-      system.bangComplexSequence(2);      // 往上輪閃
+      system.bangComplexSequence(3);      // 往上輪閃
     }
   }
 
