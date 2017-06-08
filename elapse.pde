@@ -13,7 +13,7 @@ SyphonServer server;
 PGraphics canvas;
 
 // MIDI
-MidiBus midiA; //APC20
+//MidiBus midiA; //APC20
 MidiBus midiB; //Midi Fighter
 
 // Arduino
@@ -26,7 +26,7 @@ float master = 1;
 
 
 void settings() {
-  size(1400, 800, P3D);
+  size(1400, 500, P3D);
   PJOGL.profile=1;
 }
 
@@ -42,7 +42,7 @@ void setup() {
   server = new SyphonServer(this, "Processing Syphon");
 
   // midi
-  midiA = new MidiBus(this, "Akai APC20", -1, "Akai");
+  //midiA = new MidiBus(this, "Akai APC20", -1, "Akai");
   midiB = new MidiBus(this, "Midi Fighter 3D", -1, "DJ TECHTOOLS");
 
   // Arduino
@@ -670,7 +670,7 @@ void noteOn(int channel, int pitch, int velocity) {
   }
 } */
 
-void controllerChange(int channel, int number, int value) {
+/*void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
   println();
   println("Controller Change:");
@@ -707,7 +707,7 @@ void controllerChange(int channel, int number, int value) {
     system.setFadeControlValue(value/127.0);
     }
    }
-}
+}*/
 
 //Processing to Arduino (for tube control)
 void keyPressed() {
