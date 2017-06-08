@@ -666,7 +666,7 @@ void noteOn(int channel, int pitch, int velocity) {
   }
 } */
 
-/*void controllerChange(int channel, int number, int value) {
+void controllerChange(int channel, int number, int value) {
   // Receive a controllerChange
   println();
   println("Controller Change:");
@@ -676,7 +676,7 @@ void noteOn(int channel, int pitch, int velocity) {
   println("Value:"+value);
   println("****************************");
 
-  //APC20 --------------------------------------------------
+  /*//APC20 --------------------------------------------------
   //Slider Control
   //master lighting value
   if (channel == 0) {
@@ -690,7 +690,7 @@ void noteOn(int channel, int pitch, int velocity) {
     if(number == 7) {
     system.setFadeControlValue(value/127.0);
     }
-  }
+  }*/
 
   //Midi Fighter --------------------------------------------
   //master lighting value
@@ -703,7 +703,7 @@ void noteOn(int channel, int pitch, int velocity) {
     system.setFadeControlValue(value/127.0);
     }
    }
-}*/
+}
 
 //Processing to Arduino (for tube control)
 void keyPressed() {
