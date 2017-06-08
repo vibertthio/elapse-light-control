@@ -531,42 +531,38 @@ void noteOn(int channel, int pitch, int velocity) {
       system.dimRepeatCol(1, 20, 2);      // 右閃
       myPort.write(1);
     } else if (pitch == 92) {
-      system.bangSequence(18, 30);        // 往下閃
+      system.bangSequence(18, 40);        // 往下閃
       myPort.write(1);
     } else if (pitch == 88) {
-      system.turnOneOnFor(10, 30, 50);    // 10閃一
-      myPort.write(1);
+      system.bangSequence(6, 5);         // 左至右，上至下輪閃
     } else if (pitch == 84) {
-      system.turnOneOnFor(11, 30, 50);    // 11閃一
-      myPort.write(1);
+      system.bangSequence(7, 5);         // 右至左，上至下輪閃
     } else if (pitch == 97) {
       system.dimRepeatCol(1, 20, 1);      // 中閃
       myPort.write(2);
     } else if (pitch == 93) {
-      system.bangSequence(14, 30);        // 往下閃
+      system.bangSequence(14, 40);        // 往下閃
       myPort.write(2);
     } else if (pitch == 89) {
-      system.turnOneOnFor(6, 30, 50);     // 6閃一
-      myPort.write(2);
+      system.bangSequence(26, 5);         // 左至右，對角輪閃
     } else if (pitch == 85) {
-      system.turnOneOnFor(7, 30, 50);     // 7閃一
-      myPort.write(2);
+      system.bangSequence(27, 5);         // 右至左，對角輪閃
     } else if (pitch == 98) {
       system.dimRepeatCol(1, 20, 0);      // 左閃
       myPort.write(3);
     } else if (pitch == 94) {
-      system.bangSequence(10, 30);        // 往下閃
+      system.bangSequence(10, 40);        // 往下閃
       myPort.write(3);
     } else if (pitch == 90) {
-      system.turnOneOnFor(2, 30, 50);     // 2閃一
-      myPort.write(3);
+      system.bangSequence(24, 5);        // 上至下，左跳右輪閃
+      myPort.write(1);
     } else if (pitch == 86) {
-      system.turnOneOnFor(3, 30, 50);     // 3閃一
+      system.bangSequence(23, 5);        // 上至下，右跳左輪閃
       myPort.write(3);
     }
     //for All
       else if (pitch == 99) {
-      system.turnOnEasingFor(250);        // 前緩後急閃
+      myPort.write(5);                    // 日光燈全閃
     } else if (pitch == 95) {
       system.dimRepeat(1, 30);            // 全閃一
       myPort.write(5);
