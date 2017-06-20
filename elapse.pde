@@ -19,7 +19,7 @@ MidiBus midiB; //Midi Fighter
 // Arduino
 //Serial myPort;
 
-//System system;
+System system;
 
 color c = color(0, 160, 100);
 float master = 1;
@@ -116,7 +116,7 @@ void gui() {
      .setPosition(10,50)
      .setSize(100,20)
      .setRange(0,127)
-     .setValue(200)
+     .setValue(0)
      .moveTo(g2)
      ;
 
@@ -162,7 +162,7 @@ public void controlEvent(ControlEvent theEvent) {
       float value = theEvent.controller().getValue() / 127.0;
       master = value;
     } else if (theEvent.controller().getName() == "elapse") {
-      float value = theEvent.controller().getValue() / 127.0;
+      float value = theEvent.controller().getValue() / 180.0;
       // TODO
       system.setFadeControlValue(value);
     }
@@ -562,10 +562,10 @@ void noteOn(int channel, int pitch, int velocity) {
     }
     //for All
       else if (pitch == 99) {
-      myPort.write(5);                    // 日光燈全閃
+      //myPort.write(5);                    // 日光燈全閃
     } else if (pitch == 95) {
       system.dimRepeat(1, 30);            // 全閃一
-      myPort.write(5);
+      //myPort.write(5);
     } else if (pitch == 91) {
       system.bangComplexSequence(2);      // 往下輪閃
     } else if (pitch == 87) {
@@ -836,5 +836,3 @@ void controllerChange(int channel, int number, int value) {
   // system.elapseStateControls[1].bang();
   //  system.bangComplexAsyncElapse(1);
   //}
-
-}
