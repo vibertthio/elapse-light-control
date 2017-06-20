@@ -17,9 +17,9 @@ PGraphics canvas;
 MidiBus midiB; //Midi Fighter
 
 // Arduino
-Serial myPort;
+//Serial myPort;
 
-System system;
+//System system;
 
 color c = color(0, 160, 100);
 float master = 1;
@@ -46,8 +46,8 @@ void setup() {
   midiB = new MidiBus(this, "Midi Fighter 3D", -1, "DJ TECHTOOLS");
 
   // Arduino
-  printArray(Serial.list());
-  myPort = new Serial(this, Serial.list()[3], 9600);
+  //printArray(Serial.list());
+  //myPort = new Serial(this, Serial.list()[3], 9600);
   // myPort = new Serial(this, Serial.list()[0], 9600);
 }
 
@@ -529,36 +529,36 @@ void noteOn(int channel, int pitch, int velocity) {
     //page 4 ************************* basic LED control with tubes
       else if (pitch == 96) {
       system.dimRepeatCol(1, 20, 2);      // 右閃
-      myPort.write(1);
+      //myPort.write(1);
     } else if (pitch == 92) {
       system.bangSequence(18, 40);        // 往下閃
-      myPort.write(1);
+      //myPort.write(1);
     } else if (pitch == 88) {
       system.bangSequence(6, 5);         // 左至右，上至下輪閃
     } else if (pitch == 84) {
       system.bangSequence(7, 5);         // 右至左，上至下輪閃
     } else if (pitch == 97) {
       system.dimRepeatCol(1, 20, 1);      // 中閃
-      myPort.write(2);
+      //myPort.write(2);
     } else if (pitch == 93) {
       system.bangSequence(14, 40);        // 往下閃
-      myPort.write(2);
+      //myPort.write(2);
     } else if (pitch == 89) {
       system.bangSequence(26, 5);         // 左至右，對角輪閃
     } else if (pitch == 85) {
       system.bangSequence(27, 5);         // 右至左，對角輪閃
     } else if (pitch == 98) {
       system.dimRepeatCol(1, 20, 0);      // 左閃
-      myPort.write(3);
+      //myPort.write(3);
     } else if (pitch == 94) {
       system.bangSequence(10, 40);        // 往下閃
-      myPort.write(3);
+      //myPort.write(3);
     } else if (pitch == 90) {
       system.bangSequence(24, 5);        // 上至下，左跳右輪閃
-      myPort.write(1);
+      //myPort.write(1);
     } else if (pitch == 86) {
       system.bangSequence(23, 5);        // 上至下，右跳左輪閃
-      myPort.write(3);
+      //myPort.write(3);
     }
     //for All
       else if (pitch == 99) {
@@ -706,7 +706,7 @@ void controllerChange(int channel, int number, int value) {
 }
 
 //Processing to Arduino (for tube control)
-void keyPressed() {
+/*void keyPressed() {
   if (key == 'q') {
     myPort.write(1);
   }
@@ -745,7 +745,7 @@ void keyPressed() {
     system.setElapseCountLimit(0);
     system.elapseStateControls[1].bang();
   }
-
+*/
 
 
   /*******
