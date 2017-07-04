@@ -706,133 +706,131 @@ void controllerChange(int channel, int number, int value) {
 }
 
 //Processing to Arduino (for tube control)
-/*void keyPressed() {
-  if (key == 'q') {
-    myPort.write(1);
-  }
-  if (key == 'w') {
-    myPort.write(2);
-  }
-  if (key == 'e') {
-    myPort.write(3);
-  }
-  if (key == 'r') {
-    myPort.write(4);
-  }
-  if (key == 't') {
-    myPort.write(5);
-  }
-  if (key == 'a') {
-    myPort.write(7);
-  }
-  if (key == 's') {
-    myPort.write(8);
-  }
+// void keyPressed() {
+//   if (key == 'q') {
+//     myPort.write(1);
+//   }
+//   if (key == 'w') {
+//     myPort.write(2);
+//   }
+//   if (key == 'e') {
+//     myPort.write(3);
+//   }
+//   if (key == 'r') {
+//     myPort.write(4);
+//   }
+//   if (key == 't') {
+//     myPort.write(5);
+//   }
+//   if (key == 'a') {
+//     myPort.write(7);
+//   }
+//   if (key == 's') {
+//     myPort.write(8);
+//   }
+//
+//
+//   if (key == 'x') {
+//     system.triggerIndependentControl();
+//   }
+//
+//   if (key == 'v') {
+//     system.triggerFadeControl();
+//   }
+//   if (key == 'c') {
+//     system.setElapseCountLimit(5);
+//     system.bangComplexAsyncElapse(1);
+//   }
+//   if (key == 'n') {
+//     system.setElapseCountLimit(0);
+//     system.elapseStateControls[1].bang();
+//   }
+
+/*******
+First Row
+*******/
+
+// system.dimRepeat(1, 20);              // blink
+// system.turnOnEasingFor(800);          // 前緩後急閃
+// system.dimRepeat(3, 50);              // 連閃 3 次
+// system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
+// system.turnRandOneOnFor(20, 20);      // randon strobe (one)
+// system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
+// system.turnOn(100);                   // dim on
+// system.turnOff(100);                  // dim off
+
+/*******
+Second Row
+*******/
+// system.bangComplexSequence(0);         // 閃 ->
+// system.bangComplexSequence(1);         // 閃 <-
+// system.bangSequence(0);                // 0, 7, 8
+// system.bangSequence(1);                // 3, 4, 11
+// system.bangSequence(2);                // 0, 3, 4, 7, 8, 11
+// system.bangComplexSequence(2);         // 四列輪閃
+// system.bangSequence(4);                // 0, 11, 4, 8
+// system.bangSequence(5);                // 9, 2, 1, 10
+
+/*******
+Third Row
+*******/
+// system.dimRepeatCol(1, 20, 0);         // 閃
+// turnOnEasingForCol(800, 0);            // 前緩後急閃
+// system.bangSequence(10);               // (▼)往下閃
+// system.bangSequence(11);               // (▲)往上閃
+// system.bangSequence(12);               // 0, 3, 2, 1
+// system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
+// system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
+// system.bangSequence(13);               // 0, 2, 1, 3
 
 
-  if (key == 'x') {
-    system.triggerIndependentControl();
-  }
+/*******
+Auto Effect
+*******/
+// first column
+// system.triggerSequence(22);         // 往下輪閃
+// system.triggerSequence(23);         // 網上輪閃
+// system.triggerSequence(6);          // 左到右, 上到下 輪閃
+//
+// second column
+// system.triggerComplexAsyncSequence(0);    // 往下全開/關
+// system.triggerComplexAsyncSequence(1);    // 往上全開/關
+// system.triggerSequence(7);                // 右到左, 上到下 輪閃
+//
+// third column
+// system.triggerSequence(28);
+// system.triggerSequence(29);
+//
+// fourth column
+// system.triggerAsyncSequence(6);
+// system.triggerAsyncSequence(7);
 
-  if (key == 'v') {
-    system.triggerFadeControl();
-  }
-  if (key == 'c') {
-    system.setElapseCountLimit(5);
-    system.bangComplexAsyncElapse(1);
-  }
-  if (key == 'n') {
-    system.setElapseCountLimit(0);
-    system.elapseStateControls[1].bang();
-  }
-*/
-
-
-  /*******
-  First Row
-  *******/
-
-  // system.dimRepeat(1, 20);              // blink
-  // system.turnOnEasingFor(800);          // 前緩後急閃
-  // system.dimRepeat(3, 50);              // 連閃 3 次
-  // system.turnRandMultipleOnFor(20, 20); // randon strobe (multiple)
-  // system.turnRandOneOnFor(20, 20);      // randon strobe (one)
-  // system.bangFourRandSequence(50);      // randon strobe (取 4 個輪流)
-  // system.turnOn(100);                   // dim on
-  // system.turnOff(100);                  // dim off
-
-  /*******
-  Second Row
-  *******/
-  // system.bangComplexSequence(0);         // 閃 ->
-  // system.bangComplexSequence(1);         // 閃 <-
-  // system.bangSequence(0);                // 0, 7, 8
-  // system.bangSequence(1);                // 3, 4, 11
-  // system.bangSequence(2);                // 0, 3, 4, 7, 8, 11
-  // system.bangComplexSequence(2);         // 四列輪閃
-  // system.bangSequence(4);                // 0, 11, 4, 8
-  // system.bangSequence(5);                // 9, 2, 1, 10
-
-  /*******
-  Third Row
-  *******/
-  // system.dimRepeatCol(1, 20, 0);         // 閃
-  // turnOnEasingForCol(800, 0);            // 前緩後急閃
-  // system.bangSequence(10);               // (▼)往下閃
-  // system.bangSequence(11);               // (▲)往上閃
-  // system.bangSequence(12);               // 0, 3, 2, 1
-  // system.bangAsyncSequence(3);           // dim on (▲), then dim off (▼)
-  // system.bangAsyncSequence(0);           // dim on (▼), then dim off (▲)
-  // system.bangSequence(13);               // 0, 2, 1, 3
+/*******
+The Rightest Column
+*******/
+// system.turnRandOneOn();                   // dim on one (rand)
+// system.turnRandOneOff();                  // dim off one (rand)
 
 
-  /*******
-  Auto Effect
-  *******/
-  // first column
-  // system.triggerSequence(22);         // 往下輪閃
-  // system.triggerSequence(23);         // 網上輪閃
-  // system.triggerSequence(6);          // 左到右, 上到下 輪閃
-  //
-  // second column
-  // system.triggerComplexAsyncSequence(0);    // 往下全開/關
-  // system.triggerComplexAsyncSequence(1);    // 往上全開/關
-  // system.triggerSequence(7);                // 右到左, 上到下 輪閃
-  //
-  // third column
-  // system.triggerSequence(28);
-  // system.triggerSequence(29);
-  //
-  // fourth column
-  // system.triggerAsyncSequence(6);
-  // system.triggerAsyncSequence(7);
-
-  /*******
-  The Rightest Column
-  *******/
-  // system.turnRandOneOn();                   // dim on one (rand)
-  // system.turnRandOneOff();                  // dim off one (rand)
+/*******
+Test for trigger logic
+*******/
+// system.triggerComplexSequence(0);
 
 
-  /*******
-  Test for trigger logic
-  *******/
-  // system.triggerComplexSequence(0);
+//  system.triggerIndependentControl();
+
+//}
+
+//if (key == 'b') {
+/*******
+Test for trigger logic
+*******/
+// system.triggerComplexSequence(2);
 
 
-  //  system.triggerIndependentControl();
-
-  //}
-
-  //if (key == 'b') {
-  /*******
-  Test for trigger logic
-  *******/
-  // system.triggerComplexSequence(2);
-
-
-  // system.bangElapseLeft();
-  // system.bangElapseRight();
-  // system.elapseStateControls[1].bang();
-  //  system.bangComplexAsyncElapse(1);
-  //}
+// system.bangElapseLeft();
+// system.bangElapseRight();
+// system.elapseStateControls[1].bang();
+//  system.bangComplexAsyncElapse(1);
+//}
